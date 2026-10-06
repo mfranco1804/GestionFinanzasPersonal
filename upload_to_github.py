@@ -110,6 +110,9 @@ def main():
         print("[ERROR] No se obtuvo la upload_url del release.")
         sys.exit(1)
 
+    # Obtener lista actual de assets para eliminar duplicados anteriores
+    existing_assets = {a.get("name"): a.get("id") for a in data.get("assets", [])}
+
     # Subir cada archivo
     for filepath in files_to_upload:
         if not os.path.exists(filepath):
@@ -119,6 +122,18 @@ def main():
         filename = os.path.basename(filepath)
         size = os.path.getsize(filepath)
         content_type = "application/octet-stream" if filename.endswith(".exe") else "text/plain"
+
+        # Si el asset ya existe en GitHub, eliminarlo primero para evitar error 422
+        if filename in existing_assets:
+            asset_id = existing_assets[filename]
+            print(f"[INFO] Eliminando versión anterior de {filename} (ID: {asset_id})...")
+            del_url = f"https://api.github.com/repos/{REPO}/releases/assets/{asset_id}"
+            del_req = urllib.request.Request(del_url, method="DELETE", headers=headers)
+            try:
+                with urllib.request.urlopen(del_req, timeout=30) as del_resp:
+                    print(f" -> [OK] Asset anterior {filename} eliminado.")
+            except Exception as e_del:
+                print(f" -> [AVISO] No se pudo eliminar asset anterior {filename}: {e_del}")
         
         target_url = f"{upload_url}?name={urllib.parse.quote(filename)}"
         print(f"Subiendo {filename} ({size // 1024} KB)...")

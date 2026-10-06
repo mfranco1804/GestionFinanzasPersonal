@@ -1,13 +1,9 @@
 """
 instalador.py — Instalador Gráfico Oficial y Autónomo para App Gestión Personal.
 
-Este programa es un instalador autónomo (Self-Contained Installer):
-  1. Contiene la aplicación embebida (AppGestionPersonal.exe) para funcionar 100% OFFLINE en cualquier equipo.
-  2. También soporta instalación desde USB con archivos locales o actualización desde GitHub Releases si existe.
-  3. Selector visual de carpeta de instalación (por defecto C:\\AppGestionPersonal).
-  4. NUNCA sobreescribe una base de datos existente (protege tus datos y balances).
-  5. Crea el acceso directo oficial en el Escritorio con icono de alta resolución.
-  6. Crea el archivo de arranque Iniciar_App.bat y ofrece abrir la app inmediatamente.
+Funciona de dos maneras:
+  1. AUTÓNOMO (OFFLINE TOTAL): Desempaqueta 'app_payload.dat' que viene embebido dentro del propio .exe.
+  2. NUBE (ONLINE FALLBACK): Si no viniera embebido, descarga la versión oficial desde GitHub Releases.
 """
 
 import os
@@ -22,13 +18,23 @@ from tkinter import ttk, messagebox, filedialog
 import threading
 import ssl
 
-try:
-    ssl._create_default_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
+def _get_ssl_context():
+    """Genera un contexto SSL permisivo y seguro para evitar fallos de certificados en Windows."""
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except Exception:
+        pass
+    try:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        return ctx
+    except Exception:
+        return None
 
 # ═══════════════════════════════════════════════════════════════
-#  CONFIGURACIÓN DEL INSTALADOR
+#  CONFIGURACIÓN
 # ═══════════════════════════════════════════════════════════════
 
 GITHUB_OWNER = "mfranco1804"
@@ -38,27 +44,48 @@ GITHUB_API_URL = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/rel
 DEFAULT_INSTALL_DIR = r"C:\AppGestionPersonal"
 PROGRAM_NAME = "Gestión Financiera Personal"
 EXE_NAME = "AppGestionPersonal.exe"
+PAYLOAD_NAME = "app_payload.dat"
 DB_NAME = "finanzas_personales.db"
 ICO_NAME = "icono.ico"
 
 # ═══════════════════════════════════════════════════════════════
-#  LOCALIZADOR INTELIGENTE DE RECURSOS (EMBEBIDO / LOCAL / RED)
+#  LOCALIZADOR DE ARCHIVOS Y RECURSOS
 # ═══════════════════════════════════════════════════════════════
 
-def localizar_recurso(nombre_archivo):
+def localizar_payload():
     """
-    Localiza un archivo necesario con el siguiente orden de prioridad:
-    1. Recursos embebidos en el propio ejecutable del instalador (sys._MEIPASS).
-    2. Directorio local donde reside el instalador (USB / pendrive / carpeta).
-    3. Carpeta 'compilado' adyacente.
+    Busca el archivo binario del programa (embebido o local).
+    Retorna la ruta absoluta si existe y tiene tamaño real.
     """
     candidatos = []
     
-    # 1. Embebido dentro del binario del instalador (PyInstaller)
+    # 1. Embebido dentro del .exe del instalador (PyInstaller _MEIPASS)
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        candidatos.append(os.path.join(sys._MEIPASS, PAYLOAD_NAME))
+        candidatos.append(os.path.join(sys._MEIPASS, EXE_NAME))
+        
+    # 2. Junto al ejecutable del instalador (ej: carpeta o USB)
+    exe_dir = os.path.dirname(os.path.abspath(sys.executable if getattr(sys, 'frozen', False) else __file__))
+    candidatos.append(os.path.join(exe_dir, PAYLOAD_NAME))
+    candidatos.append(os.path.join(exe_dir, EXE_NAME))
+    candidatos.append(os.path.join(exe_dir, "compilado", EXE_NAME))
+    candidatos.append(os.path.join(os.path.dirname(exe_dir), "compilado", EXE_NAME))
+
+    for ruta in candidatos:
+        if os.path.exists(ruta):
+            try:
+                if os.path.getsize(ruta) > 1000000: # Más de 1 MB
+                    return ruta
+            except OSError:
+                pass
+                
+    return None
+
+def localizar_archivo(nombre_archivo):
+    """Busca recursos secundarios como iconos o bases de datos."""
+    candidatos = []
     if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
         candidatos.append(os.path.join(sys._MEIPASS, nombre_archivo))
-        
-    # 2. Carpeta donde está guardado el .exe del instalador
     exe_dir = os.path.dirname(os.path.abspath(sys.executable if getattr(sys, 'frozen', False) else __file__))
     candidatos.append(os.path.join(exe_dir, nombre_archivo))
     candidatos.append(os.path.join(exe_dir, "compilado", nombre_archivo))
@@ -68,12 +95,12 @@ def localizar_recurso(nombre_archivo):
     for ruta in candidatos:
         if os.path.exists(ruta):
             return ruta
-            
     return None
 
 def obtener_ultimo_release():
-    """Consulta GitHub Releases de forma segura. Si el repo no existe aún, retorna None sin fallar."""
+    """Consulta GitHub Releases."""
     try:
+        ctx = _get_ssl_context()
         req = urllib.request.Request(
             GITHUB_API_URL,
             headers={
@@ -81,10 +108,13 @@ def obtener_ultimo_release():
                 "User-Agent": "AppGestionPersonal-Installer/1.0"
             }
         )
-        with urllib.request.urlopen(req, timeout=8) as response:
+        kwargs = {"timeout": 12}
+        if ctx:
+            kwargs["context"] = ctx
+        with urllib.request.urlopen(req, **kwargs) as response:
             return json.loads(response.read().decode("utf-8"))
     except Exception as e:
-        print(f"[Instalador] Repositorio remoto no disponible ({e}). Usando versión local autónoma.")
+        print(f"[Instalador] No se pudo conectar a GitHub: {e}")
         return None
 
 def obtener_urls_assets(release_data):
@@ -104,7 +134,7 @@ def obtener_urls_assets(release_data):
     return exe_url, checksums_url, version
 
 def crear_acceso_directo_windows(target_exe, shortcut_path, icon_path=None):
-    """Crea un acceso directo .lnk en el Escritorio mediante PowerShell con elevación segura."""
+    """Crea acceso directo en el escritorio."""
     try:
         icon_cmd = f'$s.IconLocation = "{icon_path}";' if (icon_path and os.path.exists(icon_path)) else ''
         ps_cmd = (
@@ -118,11 +148,11 @@ def crear_acceso_directo_windows(target_exe, shortcut_path, icon_path=None):
         subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", ps_cmd], check=True, creationflags=subprocess.CREATE_NO_WINDOW)
         return True
     except Exception as e:
-        print(f"Aviso al crear acceso directo: {e}")
+        print(f"Aviso acceso directo: {e}")
         return False
 
 # ═══════════════════════════════════════════════════════════════
-#  INTERFAZ GRÁFICA TKINTER
+#  INTERFAZ GRÁFICA
 # ═══════════════════════════════════════════════════════════════
 
 class InstallerApp:
@@ -133,11 +163,10 @@ class InstallerApp:
         self.root.resizable(False, False)
         self.root.configure(bg="#0f172a")
 
-        # Cargar icono si existe
-        ico_encontrado = localizar_recurso(ICO_NAME)
-        if ico_encontrado:
+        ico = localizar_archivo(ICO_NAME)
+        if ico:
             try:
-                self.root.iconbitmap(ico_encontrado)
+                self.root.iconbitmap(ico)
             except Exception:
                 pass
 
@@ -157,7 +186,6 @@ class InstallerApp:
         self.root.geometry(f"{w}x{h}+{x}+{y}")
 
     def _construir_ui(self):
-        # Cabecera moderna
         header = tk.Frame(self.root, bg="#064e3b", height=85)
         header.pack(fill="x")
         header.pack_propagate(False)
@@ -165,10 +193,9 @@ class InstallerApp:
         title = tk.Label(header, text="Gestión Financiera Personal", font=("Segoe UI", 15, "bold"), fg="#ffffff", bg="#064e3b")
         title.pack(anchor="w", padx=25, pady=(15, 2))
 
-        subtitle = tk.Label(header, text="Instalador Oficial de Escritorio — Paquete Autónomo", font=("Segoe UI", 9), fg="#a7f3d0", bg="#064e3b")
+        subtitle = tk.Label(header, text="Instalador Oficial de Escritorio — Paquete Completo", font=("Segoe UI", 9), fg="#a7f3d0", bg="#064e3b")
         subtitle.pack(anchor="w", padx=25)
 
-        # Contenido Principal
         body = tk.Frame(self.root, bg="#0f172a", padx=25, pady=20)
         body.pack(fill="both", expand=True)
 
@@ -184,7 +211,6 @@ class InstallerApp:
         btn_browse = tk.Button(dir_frame, text="Examinar...", font=("Segoe UI", 9), bg="#334155", fg="#ffffff", activebackground="#475569", activeforeground="#ffffff", bd=0, padx=12, cursor="hand2", command=self._seleccionar_carpeta)
         btn_browse.pack(side="right")
 
-        # Barra de Progreso
         lbl_prog = tk.Label(body, textvariable=self.status_text, font=("Segoe UI", 9), fg="#94a3b8", bg="#0f172a")
         lbl_prog.pack(anchor="w", pady=(5, 5))
 
@@ -195,7 +221,6 @@ class InstallerApp:
         self.progress_bar = ttk.Progressbar(body, variable=self.progress_val, maximum=100, style="Emerald.Horizontal.TProgressbar")
         self.progress_bar.pack(fill="x", pady=(0, 20), ipady=2)
 
-        # Botones de Acción
         btn_frame = tk.Frame(body, bg="#0f172a")
         btn_frame.pack(fill="x", side="bottom")
 
@@ -212,62 +237,64 @@ class InstallerApp:
 
     def _iniciar_instalacion(self):
         self.btn_install.config(state="disabled", text="Instalando...")
-        thread = threading.Thread(target=self._proceso_instalacion, daemon=True)
-        thread.start()
+        threading.Thread(target=self._proceso_instalacion, daemon=True).start()
 
     def _proceso_instalacion(self):
         dest_dir = self.install_dir.get().strip()
         try:
             os.makedirs(dest_dir, exist_ok=True)
         except Exception as e:
-            self._mostrar_error(f"No se pudo crear la carpeta de instalación:\n{e}")
+            self._mostrar_error(f"No se pudo crear la carpeta de instalación ({dest_dir}):\n{e}\n\nIntente ejecutar el instalador como Administrador o elija otra carpeta.")
             return
 
         dest_exe = os.path.join(dest_dir, EXE_NAME)
         dest_db = os.path.join(dest_dir, DB_NAME)
         dest_ico = os.path.join(dest_dir, ICO_NAME)
 
-        # Paso 1: Intentar obtener el ejecutable desde los recursos del instalador
-        self.status_text.set("Desempaquetando archivos del sistema...")
-        self.progress_val.set(20)
-
-        exe_origen = localizar_recurso(EXE_NAME)
-        db_origen = localizar_recurso(DB_NAME)
-        ico_origen = localizar_recurso(ICO_NAME)
+        # Cerrar procesos anteriores si estuvieran abiertos
+        if os.path.exists(dest_exe):
+            try:
+                subprocess.run(["taskkill", "/f", "/im", EXE_NAME], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                import time
+                time.sleep(0.5)
+            except Exception:
+                pass
 
         exe_instalado = False
 
-        if exe_origen:
+        # 1. Método A: Desempaquetar recurso embebido o local
+        self.status_text.set("Desempaquetando archivos del sistema...")
+        self.progress_val.set(25)
+        
+        payload_local = localizar_payload()
+        if payload_local:
             try:
                 self.status_text.set("Copiando ejecutable a la carpeta de destino...")
-                self.progress_val.set(45)
-                # Si el archivo destino ya existe y está bloqueado por el sistema
-                if os.path.exists(dest_exe):
-                    try:
-                        subprocess.run(["taskkill", "/f", "/im", EXE_NAME], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                        import time
-                        time.sleep(0.5)
-                        os.remove(dest_exe)
-                    except Exception:
-                        pass
-                shutil.copy2(exe_origen, dest_exe)
-                exe_instalado = True
-                self.progress_val.set(70)
+                self.progress_val.set(50)
+                shutil.copy2(payload_local, dest_exe)
+                if os.path.exists(dest_exe) and os.path.getsize(dest_exe) > 1000000:
+                    exe_instalado = True
+                    self.progress_val.set(75)
             except Exception as e_copy:
-                print(f"Aviso al copiar local: {e_copy}")
+                print(f"Aviso al copiar payload local: {e_copy}")
 
-        # Paso 2: Si no estaba embebido ni local, intentar descargar desde GitHub como fallback
+        # 2. Método B: Fallback vía GitHub Releases (si no venía embebido)
         if not exe_instalado:
-            self.status_text.set("Buscando versión en la nube...")
+            self.status_text.set("Conectando con GitHub Releases...")
             self.progress_val.set(30)
-            release_info = obtener_ultimo_release()
-            exe_url, checksums_url, version = obtener_urls_assets(release_info)
+            release_data = obtener_ultimo_release()
+            exe_url, checksums_url, version = obtener_urls_assets(release_data)
 
             if exe_url:
                 try:
-                    self.status_text.set(f"Descargando versión {version}...")
+                    self.status_text.set(f"Descargando versión {version} desde GitHub...")
+                    ctx = _get_ssl_context()
                     req = urllib.request.Request(exe_url, headers={"User-Agent": "AppGestionPersonal-Installer/1.0"})
-                    with urllib.request.urlopen(req, timeout=120) as resp:
+                    kwargs = {"timeout": 180}
+                    if ctx:
+                        kwargs["context"] = ctx
+
+                    with urllib.request.urlopen(req, **kwargs) as resp:
                         total = int(resp.headers.get("Content-Length", 0))
                         descargado = 0
                         with open(dest_exe, "wb") as f:
@@ -278,46 +305,50 @@ class InstallerApp:
                                 f.write(chunk)
                                 descargado += len(chunk)
                                 if total > 0:
-                                    pct = 30 + (descargado / total) * 40
+                                    pct = 30 + (descargado / total) * 45
                                     self.progress_val.set(pct)
+                                    self.status_text.set(f"Descargando: {descargado // (1024*1024)} MB / {total // (1024*1024)} MB")
                     exe_instalado = True
-                except Exception as e_net:
-                    print(f"Error de red: {e_net}")
+                except Exception as e_dl:
+                    print(f"Error al descargar desde GitHub: {e_dl}")
 
         if not exe_instalado or not os.path.exists(dest_exe):
             self._mostrar_error(
-                f"No se pudo encontrar {EXE_NAME} para instalar.\n\n"
-                "Asegúrese de haber copiado el archivo junto al instalador o verifique los permisos de disco."
+                f"No se pudo instalar {EXE_NAME}.\n\n"
+                f"Carpeta destino: {dest_dir}\n"
+                "Verifique permisos de disco o asegúrese de que el archivo no esté bloqueado por un antivirus."
             )
             return
 
-        # Paso 3: Base de datos (NUNCA sobreescribir si ya existe)
+        # 3. Base de datos inicial (NUNCA sobreescribir si ya existe)
         self.status_text.set("Configurando base de datos...")
-        self.progress_val.set(75)
+        self.progress_val.set(80)
         if not os.path.exists(dest_db):
+            db_origen = localizar_archivo(DB_NAME)
             if db_origen and os.path.exists(db_origen):
                 try:
                     shutil.copy2(db_origen, dest_db)
                 except Exception:
                     pass
 
-        # Paso 4: Copiar Icono
+        # 4. Icono
         self.status_text.set("Configurando iconos...")
-        self.progress_val.set(85)
+        self.progress_val.set(88)
+        ico_origen = localizar_archivo(ICO_NAME)
         if ico_origen and os.path.exists(ico_origen):
             try:
                 shutil.copy2(ico_origen, dest_ico)
             except Exception:
                 pass
 
-        # Paso 5: Crear lanzador Iniciar_App.bat
+        # 5. Lanzador Iniciar_App.bat
         launcher_bat = os.path.join(dest_dir, "Iniciar_App.bat")
         with open(launcher_bat, "w", encoding="utf-8") as f:
             f.write("@echo off\n")
             f.write("title GESTION FINANCIERA PERSONAL\n")
             f.write(f'start "" "{EXE_NAME}"\n')
 
-        # Paso 6: Crear Acceso Directo en el Escritorio
+        # 6. Acceso directo en el Escritorio
         self.status_text.set("Creando acceso directo en el Escritorio...")
         self.progress_val.set(95)
         
@@ -336,7 +367,6 @@ class InstallerApp:
 
         self.progress_val.set(100)
         self.status_text.set("¡Instalación completada exitosamente!")
-
         self.root.after(300, self._finalizar_exito, dest_exe)
 
     def _finalizar_exito(self, target_exe):

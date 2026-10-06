@@ -1,13 +1,14 @@
 """
 compilar_instalador.py — Compila el instalador autónomo (Self-Contained Setup) con PyInstaller.
 
-Genera Instalar_AppGestionPersonal.exe autocontenido con la aplicación, base de datos e iconos embebidos
-para que funcione de forma inmediata y 100% offline en cualquier equipo sin depender de internet ni de GitHub.
+Embebe 'app_payload.dat' (copia binaria de AppGestionPersonal.exe), base de datos e iconos
+para garantizar que el instalador funcione de forma inmediata, 100% offline y sin fallos en cualquier equipo.
 """
 
 import os
 import sys
 import shutil
+import time
 import subprocess
 
 def main():
@@ -27,14 +28,20 @@ def main():
         print(f"[ERROR] No se encontró {exe_src}. Debe compilar primero el ejecutable principal.")
         sys.exit(1)
 
-    # 1. Limpiar carpetas temporales
-    print("\n[1/3] Limpiando carpetas temporales del instalador...")
+    # 1. Preparar archivo binario de datos 'app_payload.dat' para evitar que PyInstaller filtre el .exe
+    payload_dat = os.path.join(script_dir, "app_payload.dat")
+    print("\n[1/4] Preparando payload binario embebido (app_payload.dat)...")
+    shutil.copy2(exe_src, payload_dat)
+    print(f"  Tamaño del payload: {os.path.getsize(payload_dat) // 1024} KB")
+
+    # 2. Limpiar carpetas temporales
+    print("\n[2/4] Limpiando carpetas temporales del instalador...")
     for d in [build_dir, dist_dir]:
         if os.path.exists(d):
             shutil.rmtree(d, ignore_errors=True)
     
-    # 2. Compilar instalador autónomo
-    print("\n[2/3] Compilando instalador autónomo con PyInstaller...")
+    # 3. Compilar instalador autónomo
+    print("\n[3/4] Compilando instalador autónomo con PyInstaller...")
     sep = ";"  # Windows path separator
     
     cmd = [
@@ -55,7 +62,7 @@ def main():
         "--exclude-module=werkzeug",
         "--exclude-module=jinja2",
         "--exclude-module=waitress",
-        f"--add-data={exe_src}{sep}.",
+        f"--add-data={payload_dat}{sep}.",
         f"--workpath={build_dir}",
         f"--distpath={dist_dir}",
         "--noconfirm"
@@ -76,15 +83,20 @@ def main():
         subprocess.run(cmd, check=True)
     except subprocess.CalledProcessError as e:
         print(f"\n[ERROR] Falló la compilación del instalador: {e}")
+        # Limpiar payload temporal
+        if os.path.exists(payload_dat):
+            try:
+                os.remove(payload_dat)
+            except OSError:
+                pass
         sys.exit(1)
         
-    # 3. Mover a compilado/
-    print("\n[3/3] Moviendo el instalador autónomo a compilado/...")
+    # 4. Mover a compilado/
+    print("\n[4/4] Moviendo el instalador autónomo a compilado/...")
     os.makedirs(output_dir, exist_ok=True)
     src_exe = os.path.join(dist_dir, "Instalar_AppGestionPersonal.exe")
     dest_exe = os.path.join(output_dir, "Instalar_AppGestionPersonal.exe")
     
-    import time
     try:
         subprocess.run(["taskkill", "/f", "/im", "Instalar_AppGestionPersonal.exe"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(1)
@@ -114,6 +126,12 @@ def main():
         sys.exit(1)
         
     # Limpieza
+    if os.path.exists(payload_dat):
+        try:
+            os.remove(payload_dat)
+        except OSError:
+            pass
+
     for d in [build_dir, dist_dir]:
         if os.path.exists(d):
             shutil.rmtree(d, ignore_errors=True)
@@ -121,8 +139,8 @@ def main():
     print("\n" + "="*60)
     print("¡INSTALADOR AUTÓNOMO GENERADO CON ÉXITO!")
     print(f"Archivo: {dest_exe}")
-    print("Este archivo ya contiene AppGestionPersonal.exe embebido.")
-    print("Funciona 100% OFFLINE en cualquier computadora sin errores 404.")
+    print(f"Tamaño final: {os.path.getsize(dest_exe) // (1024*1024)} MB")
+    print("Este archivo ya contiene toda la aplicación embebida de forma garantizada.")
     print("="*60)
 
 if __name__ == "__main__":
