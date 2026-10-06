@@ -320,16 +320,12 @@ class InstallerApp:
             )
             return
 
-        # 3. Base de datos inicial (NUNCA sobreescribir si ya existe)
-        self.status_text.set("Configurando base de datos...")
+        # 3. Base de datos: Máxima privacidad y seguridad
+        # NUNCA copiamos una base de datos existente del desarrollador.
+        # Si la base de datos ya existe en el equipo del cliente, se respeta intacta.
+        # Si no existe, AppGestionPersonal.exe la inicializa completamente limpia con init_db().
+        self.status_text.set("Verificando almacenamiento seguro...")
         self.progress_val.set(80)
-        if not os.path.exists(dest_db):
-            db_origen = localizar_archivo(DB_NAME)
-            if db_origen and os.path.exists(db_origen):
-                try:
-                    shutil.copy2(db_origen, dest_db)
-                except Exception:
-                    pass
 
         # 4. Icono
         self.status_text.set("Configurando iconos...")

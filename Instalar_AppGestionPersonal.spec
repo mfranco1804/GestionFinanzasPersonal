@@ -5,7 +5,7 @@ a = Analysis(
     ['C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\instalador\\instalador.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\instalador\\app_payload.dat', '.'), ('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\compilado\\finanzas_personales.db', '.'), ('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\icono.ico', '.')],
+    datas=[('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\instalador\\app_payload.dat', '.'), ('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\icono.ico', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

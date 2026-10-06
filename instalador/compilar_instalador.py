@@ -68,8 +68,8 @@ def main():
         "--noconfirm"
     ]
     
-    if os.path.exists(db_src):
-        cmd.append(f"--add-data={db_src}{sep}.")
+    # No se incluye ninguna base de datos para proteger la privacidad del usuario.
+    # El sistema crea automáticamente una base de datos limpia al iniciar con init_db().
         
     if os.path.exists(icono_path):
         cmd.append(f"--icon={icono_path}")

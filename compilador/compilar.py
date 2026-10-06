@@ -378,12 +378,15 @@ def main():
     shutil.move(src_exe, dest_exe)
     print(f"  Ejecutable generado en: {dest_exe}")
 
-    # 4. Preparar base de datos y utilidades en compilado/
-    print("\n[4/6] Preparando base de datos inicial y utilidades de distribución...")
-    src_db = os.path.join(root_dir, "finanzas_personales.db")
+    # 4. Privacidad y Seguridad: NO distribuir base de datos personal
+    # La aplicación genera automáticamente una base de datos limpia con init_db() en el primer arranque.
+    print("\n[4/6] Configurando seguridad de distribución (sin base de datos personal)...")
     dest_db = os.path.join(output_dir, "finanzas_personales.db")
-    if not os.path.exists(dest_db):
-        copiar_y_preparar_bd(src_db, dest_db)
+    if os.path.exists(dest_db):
+        try:
+            os.remove(dest_db)
+        except Exception:
+            pass
 
     if os.path.exists(icono_path):
         try:
