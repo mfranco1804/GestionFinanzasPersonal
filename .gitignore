@@ -1,0 +1,28 @@
+# Entornos y temporales de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.env
+.secret_key
+
+# PyInstaller builds temporales
+compilador/build/
+compilador/dist/
+instalador/build/
+instalador/dist/
+
+# Bases de datos SQLite locales (Proteger siempre los datos privados)
+*.db
+*.db-shm
+*.db-wal
+temp_*.db
+
+# Binarios de distribución (Se publican en GitHub Releases, no en el árbol git)
+compilado/
+
+# Perfil del navegador WhatsApp
+whatsapp_browser_profile/
+
+# Respaldos generados
+respaldos/

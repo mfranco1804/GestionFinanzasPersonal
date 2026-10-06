@@ -1,0 +1,1586 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+<style>
+  /* ==========================================================================
+     PROYECCIÓN FINANCIERA — Vanguard FP&A Forecast Architecture (Awwwards-Tier)
+     Double-Bezel Precision, Tactile Micro-Interactions & Harmonic Spatial Flow
+     ========================================================================== */
+
+  :root {
+    --forecast-emerald: #059669;
+    --forecast-emerald-glow: rgba(16, 185, 129, 0.15);
+    --forecast-crimson: #e11d48;
+    --forecast-crimson-glow: rgba(244, 63, 94, 0.15);
+    --forecast-indigo: #4f46e5;
+    --forecast-indigo-glow: rgba(99, 102, 241, 0.15);
+    --forecast-amber: #d97706;
+  }
+
+  /* --------------------------------------------------------------------------
+     1. HERO COMMAND CENTER (Doppelrand Architecture)
+     -------------------------------------------------------------------------- */
+  .hero-glass-shell {
+    background: rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 28px;
+    padding: 6px;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
+  }
+
+  .hero-glass-core {
+    background: linear-gradient(135deg, #090d16 0%, #0f172a 45%, #131b2e 100%);
+    border-radius: 22px;
+    padding: 30px 34px;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  .hero-glass-core::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    right: -15%;
+    width: 640px;
+    height: 640px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(16, 185, 129, 0.08) 45%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow-pill {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 9999px;
+    padding: 4px 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #e2e8f0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(8px);
+  }
+
+  .hero-title-gradient {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(180deg, #ffffff 30%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Segmented Scale Switcher (Mes vs Año) */
+  .scale-segmented-pill {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 9999px;
+    padding: 4px;
+    display: inline-flex;
+    gap: 4px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  }
+
+  .scale-segmented-btn {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 9999px;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .scale-segmented-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .scale-segmented-btn.active {
+    background: #ffffff;
+    color: #090d16;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    font-weight: 700;
+  }
+
+  /* Island CTA with Trailing Nested Icon */
+  .btn-island-cta {
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 9999px;
+    padding: 6px 6px 6px 20px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .btn-island-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5);
+    color: #ffffff;
+  }
+
+  .btn-island-cta-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: transform 0.2s ease;
+  }
+
+  .btn-island-cta:hover .btn-island-cta-icon {
+    transform: scale(1.1) rotate(90deg);
+  }
+
+  /* --------------------------------------------------------------------------
+     2. EXECUTIVE KPI CARDS (Doppelrand Architecture)
+     -------------------------------------------------------------------------- */
+  .kpi-doppelrand-shell {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 22px;
+    padding: 5px;
+    box-shadow: var(--shadow-ambient);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    height: 100%;
+  }
+
+  .kpi-doppelrand-shell:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-elevated);
+    border-color: rgba(15, 23, 42, 0.15);
+  }
+
+  .kpi-doppelrand-core {
+    background: #ffffff;
+    border: 1px solid rgba(241, 245, 249, 0.9);
+    border-radius: 17px;
+    padding: 22px 22px 18px 22px;
+    min-height: 210px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .kpi-doppelrand-core::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3.5px;
+  }
+
+  .kpi-core-income::before { background: linear-gradient(90deg, #10b981, #059669); }
+  .kpi-core-expense::before { background: linear-gradient(90deg, #f43f5e, #e11d48); }
+  .kpi-core-margin::before { background: linear-gradient(90deg, #6366f1, #3b82f6); }
+  .kpi-core-ratio::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+
+  .kpi-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .kpi-aura-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+  }
+
+  .kpi-num-display {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 1.95rem;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+  }
+
+  /* --------------------------------------------------------------------------
+     3. FINANCIAL BENTO & ABSORPTION ARCHITECTURE
+     -------------------------------------------------------------------------- */
+  .bento-card-shell {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 22px;
+    padding: 24px 26px;
+    box-shadow: var(--shadow-ambient);
+    height: 100%;
+  }
+
+  .flow-track-pill {
+    height: 14px;
+    background: #f1f5f9;
+    border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.06);
+  }
+
+  .flow-track-fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Dual Progress Capsule */
+  .dual-absorption-capsule {
+    background: #f8fafc;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+
+  /* Category Chip Items */
+  .category-pill-item {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .category-pill-item:hover {
+    border-color: rgba(15, 23, 42, 0.16);
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    transform: translateX(2px);
+  }
+
+  /* --------------------------------------------------------------------------
+     4. TWIN PANELS (ENTRADAS FIJAS & GASTOS FIJOS)
+     -------------------------------------------------------------------------- */
+  .twin-column-shell {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-ambient);
+  }
+
+  .twin-column-header {
+    padding: 18px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .twin-sub-bar {
+    padding: 10px 24px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* Tactile Item Card */
+  .forecast-item-card {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.03);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .forecast-item-card:hover {
+    border-color: rgba(15, 23, 42, 0.18);
+    box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .forecast-item-card.is-inactive {
+    background: #f8fafc;
+    border-style: dashed;
+    border-color: #cbd5e1;
+    opacity: 0.58;
+  }
+
+  .forecast-item-card.is-inactive:hover {
+    opacity: 0.85;
+  }
+
+  /* Vibrant Frequency Badges */
+  .badge-freq-tactile {
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .freq-diario { background: #e0f2fe; color: #0284c7; }
+  .freq-semanal { background: #fef3c7; color: #d97706; }
+  .freq-quincenal { background: #f3e8ff; color: #7e22ce; }
+  .freq-mensual { background: #dcfce7; color: #059669; }
+  .freq-bimestral { background: #ffedd5; color: #ea580c; }
+  .freq-trimestral { background: #fae8ff; color: #c026d3; }
+  .freq-semestral { background: #e0e7ff; color: #4338ca; }
+  .freq-anual { background: #fee2e2; color: #e11d48; }
+
+  /* --------------------------------------------------------------------------
+     5. MODAL INTERACTIVO REFINADO
+     -------------------------------------------------------------------------- */
+  .modal-preview-math {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 18px 20px;
+  }
+
+  .preview-pill-box {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    border-radius: 14px;
+    padding: 10px 12px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
+
+  .search-twin-input {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    padding: 5px 14px;
+    width: 170px;
+    transition: all 0.2s ease;
+  }
+
+  .search-twin-input:focus {
+    width: 210px;
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-xl py-4">
+
+  <!-- =========================================================================
+       1. HERO COMMAND CENTER (Doppelrand Architecture)
+       ========================================================================= -->
+  <div class="hero-glass-shell">
+    <div class="hero-glass-core">
+      <div class="row align-items-center g-3">
+        
+        <!-- Left: Titles & Context Pill -->
+        <div class="col-lg-7">
+          <div class="d-flex align-items-center gap-2 mb-2.5 flex-wrap">
+            <div class="hero-eyebrow-pill">
+              <span class="status-pulse-dot"></span>
+              <span>Simulador Continuo FP&A</span>
+            </div>
+            <span class="badge rounded-pill bg-white bg-opacity-10 text-white-50 font-numeric px-2.5 py-1" style="font-size: 0.72rem;">
+              Desacoplado del Cuadre Mensual
+            </span>
+          </div>
+
+          <h1 class="h2 hero-title-gradient mb-2 d-flex align-items-center gap-2.5">
+            <i class="bi bi-graph-up-arrow text-info"></i> Proyección: Gastos Fijos vs Entradas Fijas
+          </h1>
+          <p class="text-white-50 mb-0 small" style="max-width: 620px; line-height: 1.5;">
+            Visualiza tu estructura financiera recurrente normalizada a escala mensual y anual. Simula escenarios activando o pausando compromisos para saber exactamente cómo regular tu flujo de caja libre.
+          </p>
+        </div>
+
+        <!-- Right: Control Island & Actions -->
+        <div class="col-lg-5 text-lg-end">
+          <div class="d-flex flex-column flex-sm-row justify-content-lg-end align-items-lg-center gap-2.5">
+            
+            <!-- Scale Switcher (Mes vs Año) -->
+            <div class="scale-segmented-pill align-self-start align-self-sm-auto" role="group" aria-label="Escala de Proyección">
+              <button type="button" class="scale-segmented-btn active" id="btnScaleMensual" onclick="cambiarEscala('MENSUAL')" title="Ver valores normalizados al mes">
+                <i class="bi bi-calendar-month"></i> Vista Mensual
+              </button>
+              <button type="button" class="scale-segmented-btn" id="btnScaleAnual" onclick="cambiarEscala('ANUAL')" title="Ver valores normalizados al año completo (x12)">
+                <i class="bi bi-calendar3"></i> Vista Anual
+              </button>
+            </div>
+
+            <!-- Island Primary CTA Button -->
+            <button type="button" class="btn-island-cta" onclick="abrirModalCrear()">
+              <span>Nuevo Ítem Fijo</span>
+              <span class="btn-island-cta-icon">
+                <i class="bi bi-plus-lg"></i>
+              </span>
+            </button>
+          </div>
+
+          <!-- Secondary Actions Bar -->
+          <div class="d-flex align-items-center justify-content-lg-end gap-2 mt-3 pt-1">
+            <button type="button" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1 text-white-50 d-inline-flex align-items-center gap-1.5" onclick="recalcularConTasasBCV()" title="Actualizar ítems en Bolívares con la tasa BCV más reciente">
+              <i class="bi bi-arrow-repeat text-info" id="iconRecalcularTasas"></i>
+              <span style="font-size: 0.76rem;">Recalcular con <strong class="text-white" id="txtTasaBCVHero">BCV</strong></span>
+            </button>
+            <a href="/cuadre" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1 text-white d-inline-flex align-items-center gap-1.5" style="border-color: rgba(255,255,255,0.25);" title="Volver al Cuadre Mensual">
+              <i class="bi bi-arrow-left"></i>
+              <span style="font-size: 0.76rem;">Volver al Cuadre</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. EXECUTIVE KPI RIBBON (Doppelrand Architecture)
+       ========================================================================= -->
+  <div class="row g-3 mb-4">
+    
+    <!-- KPI 1: Entradas Fijas -->
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-doppelrand-shell">
+        <div class="kpi-doppelrand-core kpi-core-income">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="kpi-eyebrow">Entradas Fijas</span>
+            <div class="kpi-aura-icon" style="background: var(--forecast-emerald-glow); color: var(--forecast-emerald);">
+              <i class="bi bi-arrow-down-left-circle-fill"></i>
+            </div>
+          </div>
+          <div>
+            <div class="kpi-num-display text-success mb-1" id="kpiEntradasVal">$0.00</div>
+            <div class="d-flex align-items-center justify-content-between text-muted small font-numeric">
+              <span id="kpiEntradasAlt">$0.00 / año</span>
+              <span class="badge rounded-pill bg-light text-secondary border font-numeric" id="kpiEntradasCount">0 activas</span>
+            </div>
+          </div>
+          <div class="text-muted mt-3 pt-2 border-top d-flex align-items-center gap-1.5 font-numeric" style="font-size: 0.74rem;">
+            <i class="bi bi-sun text-warning"></i> <span class="fw-bold text-dark" id="kpiEntradasDiario">$0.00</span> / día promedio
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 2: Gastos Fijos -->
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-doppelrand-shell">
+        <div class="kpi-doppelrand-core kpi-core-expense">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="kpi-eyebrow">Gastos Fijos</span>
+            <div class="kpi-aura-icon" style="background: var(--forecast-crimson-glow); color: var(--forecast-crimson);">
+              <i class="bi bi-arrow-up-right-circle-fill"></i>
+            </div>
+          </div>
+          <div>
+            <div class="kpi-num-display text-danger mb-1" id="kpiGastosVal">$0.00</div>
+            <div class="d-flex align-items-center justify-content-between text-muted small font-numeric">
+              <span id="kpiGastosAlt">$0.00 / año</span>
+              <span class="badge rounded-pill bg-light text-secondary border font-numeric" id="kpiGastosCount">0 activos</span>
+            </div>
+          </div>
+          <div class="text-muted mt-3 pt-2 border-top d-flex align-items-center gap-1.5 font-numeric" style="font-size: 0.74rem;">
+            <i class="bi bi-lightning text-danger"></i> <span class="fw-bold text-dark" id="kpiGastosDiario">$0.00</span> / día de carga fija
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 3: Flujo Libre Proyectado (Margen Neto) -->
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-doppelrand-shell">
+        <div class="kpi-doppelrand-core kpi-core-margin">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="kpi-eyebrow">Margen Libre Fijo</span>
+            <div class="kpi-aura-icon" id="kpiMargenIconWrapper" style="background: var(--forecast-indigo-glow); color: var(--forecast-indigo);">
+              <i class="bi bi-piggy-bank-fill" id="kpiMargenIcon"></i>
+            </div>
+          </div>
+          <div>
+            <div class="kpi-num-display text-primary mb-1" id="kpiMargenVal">$0.00</div>
+            <div class="d-flex align-items-center justify-content-between text-muted small font-numeric">
+              <span id="kpiMargenAlt">$0.00 / año</span>
+              <span class="badge rounded-pill px-2.5 py-1 fw-bold font-numeric" id="kpiMargenStatusBadge" style="background: #e0e7ff; color: #3730a3;">Superávit</span>
+            </div>
+          </div>
+          <div class="text-muted mt-3 pt-2 border-top d-flex align-items-center gap-1.5 font-numeric" style="font-size: 0.74rem;">
+            <i class="bi bi-pie-chart text-primary"></i> Libre para ahorro: <strong class="text-dark font-numeric" id="kpiTasaAhorroPct">0%</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI 4: Ratio de Cobertura de Gastos Fijos -->
+    <div class="col-md-6 col-xl-3">
+      <div class="kpi-doppelrand-shell">
+        <div class="kpi-doppelrand-core kpi-core-ratio">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="kpi-eyebrow">Ratio Cobertura</span>
+            <div class="kpi-aura-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--forecast-amber);">
+              <i class="bi bi-speedometer2"></i>
+            </div>
+          </div>
+          <div>
+            <div class="kpi-num-display text-dark mb-1 font-numeric" id="kpiRatioVal">0.00x</div>
+            <div class="small fw-semibold mb-2" id="kpiRatioMensaje">Calculando cobertura...</div>
+          </div>
+          
+          <!-- Dual Absorption Track -->
+          <div>
+            <div class="flow-track-pill mb-1.5">
+              <div class="flow-track-fill bg-success" id="barAbsorcionFill" style="width: 0%;"></div>
+            </div>
+            <div class="d-flex justify-content-between text-muted font-numeric" style="font-size: 0.7rem;">
+              <span>Comprometido: <strong class="text-dark" id="lblPorcentajeComprometido">0%</strong></span>
+              <span>Libre: <strong class="text-success" id="lblPorcentajeLibre">100%</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =========================================================================
+       3. FINANCIAL BENTO & ABSORPTION ARCHITECTURE
+       ========================================================================= -->
+  <div class="row g-3 mb-4">
+    
+    <!-- Bento 1: Visualizador de Absorción del Flujo de Caja -->
+    <div class="col-lg-7">
+      <div class="bento-card-shell">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h6 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
+              <i class="bi bi-bar-chart-steps text-primary"></i> Estructura del Flujo de Caja Fijo
+            </h6>
+            <span class="text-muted small">Comparación entre capacidad de ingresos fijos y compromisos ineludibles</span>
+          </div>
+          <span class="badge rounded-pill bg-light text-secondary border font-numeric px-2.5 py-1" id="lblEscalaActivaGraph">Escala: Mensual</span>
+        </div>
+
+        <div class="py-2">
+          <!-- Flow 1: Entradas -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center small mb-1.5 font-numeric">
+              <span class="fw-bold text-success d-inline-flex align-items-center gap-1.5">
+                <i class="bi bi-arrow-down-left-circle-fill"></i> Entradas Fijas
+              </span>
+              <span class="fw-bold fs-6 text-dark" id="barValEntradas">$0.00</span>
+            </div>
+            <div class="flow-track-pill">
+              <div class="flow-track-fill bg-success" id="barFillEntradas" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <!-- Flow 2: Gastos -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center small mb-1.5 font-numeric">
+              <span class="fw-bold text-danger d-inline-flex align-items-center gap-1.5">
+                <i class="bi bi-arrow-up-right-circle-fill"></i> Gastos Fijos
+              </span>
+              <span class="fw-bold fs-6 text-dark" id="barValGastos">$0.00</span>
+            </div>
+            <div class="flow-track-pill">
+              <div class="flow-track-fill bg-danger" id="barFillGastos" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Flow 3: Margen Neto Libre -->
+          <div>
+            <div class="d-flex justify-content-between align-items-center small mb-1.5 font-numeric">
+              <span class="fw-bold text-primary d-inline-flex align-items-center gap-1.5">
+                <i class="bi bi-check2-circle"></i> Flujo Neto Libre
+              </span>
+              <span class="fw-bold fs-6 text-primary" id="barValMargen">$0.00</span>
+            </div>
+            <div class="flow-track-pill">
+              <div class="flow-track-fill bg-primary" id="barFillMargen" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regla Financiera 50/30/20 Widget -->
+        <div class="dual-absorption-capsule mt-3.5 d-flex align-items-center gap-2.5 text-secondary">
+          <i class="bi bi-lightbulb-fill text-warning fs-5"></i>
+          <div class="small">
+            <strong>Parámetro de Seguridad Financiera (Regla 50/30/20):</strong> 
+            Tus gastos fijos ocupan el <strong class="text-dark" id="txtReglaPct">0%</strong> de tus entradas fijas. 
+            <span id="txtReglaInterpretacion">El ideal es mantenerlos por debajo del 50% para proteger tu capacidad de ahorro e imprevistos.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bento 2: Distribución por Categorías -->
+    <div class="col-lg-5">
+      <div class="bento-card-shell">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h6 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
+              <i class="bi bi-pie-chart text-danger"></i> Distribución de Gastos Fijos
+            </h6>
+            <span class="text-muted small">Desglose porcentual sobre tu carga fija</span>
+          </div>
+        </div>
+
+        <div id="contenedorDistribucionCategorias" class="overflow-auto pe-1" style="max-height: 250px;">
+          <div class="text-center py-4 text-muted small">
+            <i class="bi bi-hourglass-split me-1"></i> Cargando distribución...
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =========================================================================
+       4. TWIN PANELS: GESTIÓN DE COMPROMISOS (ENTRADAS VS GASTOS)
+       ========================================================================= -->
+  <div class="row g-4">
+    
+    <!-- ==================== COLUMNA 1: ENTRADAS FIJAS ==================== -->
+    <div class="col-lg-6">
+      <div class="twin-column-shell">
+        
+        <!-- Header Columna -->
+        <div class="twin-column-header">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-0.5">
+              <span class="badge rounded-pill bg-success text-white px-2.5 py-1 font-numeric fw-bold" style="font-size: 0.68rem;">ENTRADAS</span>
+              <h5 class="fw-bold mb-0 text-dark">Entradas Fijas Recurrentes</h5>
+            </div>
+            <span class="text-muted small">Sueldos, honorarios, rentas y cobros continuos</span>
+          </div>
+          
+          <div class="d-flex align-items-center gap-2">
+            <input type="text" id="filtroEntradasInput" class="search-twin-input font-numeric" placeholder="🔍 Buscar entrada..." oninput="filtrarListaEntradas(this.value)">
+            <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 py-1 fw-bold d-flex align-items-center gap-1.5" onclick="abrirModalCrear('ENTRADA')">
+              <i class="bi bi-plus-lg"></i> Agregar
+            </button>
+          </div>
+        </div>
+
+        <!-- Total Sub-header -->
+        <div class="twin-sub-bar font-numeric">
+          <span class="text-secondary">Total Entradas (<span class="lblEscalaTexto">Mes</span>):</span>
+          <span class="fw-bold text-success fs-6" id="subtotalEntradasHeader">$0.00</span>
+        </div>
+
+        <!-- Lista de Items Entradas -->
+        <div class="p-3" id="listaEntradasContainer" style="min-height: 320px; max-height: 620px; overflow-y: auto;">
+          <div class="text-center py-5 text-muted">
+            <div class="spinner-border text-success spinner-border-sm mb-2" role="status"></div>
+            <div class="small">Cargando entradas fijas...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== COLUMNA 2: GASTOS FIJOS ==================== -->
+    <div class="col-lg-6">
+      <div class="twin-column-shell">
+        
+        <!-- Header Columna -->
+        <div class="twin-column-header">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-0.5">
+              <span class="badge rounded-pill bg-danger text-white px-2.5 py-1 font-numeric fw-bold" style="font-size: 0.68rem;">GASTOS</span>
+              <h5 class="fw-bold mb-0 text-dark">Gastos Fijos Recurrentes</h5>
+            </div>
+            <span class="text-muted small">Vivienda, servicios, seguros, suscripciones</span>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <input type="text" id="filtroGastosInput" class="search-twin-input font-numeric" placeholder="🔍 Buscar gasto..." oninput="filtrarListaGastos(this.value)">
+            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 fw-bold d-flex align-items-center gap-1.5" onclick="abrirModalCrear('GASTO')">
+              <i class="bi bi-plus-lg"></i> Agregar
+            </button>
+          </div>
+        </div>
+
+        <!-- Total Sub-header -->
+        <div class="twin-sub-bar font-numeric">
+          <span class="text-secondary">Total Gastos (<span class="lblEscalaTexto">Mes</span>):</span>
+          <span class="fw-bold text-danger fs-6" id="subtotalGastosHeader">$0.00</span>
+        </div>
+
+        <!-- Lista de Items Gastos -->
+        <div class="p-3" id="listaGastosContainer" style="min-height: 320px; max-height: 620px; overflow-y: auto;">
+          <div class="text-center py-5 text-muted">
+            <div class="spinner-border text-danger spinner-border-sm mb-2" role="status"></div>
+            <div class="small">Cargando gastos fijos...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- =========================================================================
+     5. MODAL INTERACTIVO CREAR / EDITAR ÍTEM FIJO
+     ========================================================================= -->
+<div class="modal fade" id="modalProyeccionItem" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      
+      <div class="modal-header border-bottom px-4 py-3 bg-light">
+        <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="modalItemTitulo">
+          <i class="bi bi-sliders text-primary"></i> <span>Registrar Movimiento Recurrente</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form id="formProyeccionItem" onsubmit="guardarItemProyeccion(event)">
+        <input type="hidden" id="inputIdItem" value="">
+        <div class="modal-body p-4">
+          
+          <!-- Segmented Switcher Tipo (Gasto vs Entrada) -->
+          <div class="mb-3.5 text-center">
+            <label class="form-label text-muted small fw-bold text-uppercase d-block mb-2 font-numeric" style="font-size: 0.72rem;">Tipo de Movimiento Fijo</label>
+            <div class="btn-group w-100 rounded-pill p-1 bg-light border shadow-2xs" role="group">
+              <input type="radio" class="btn-check" name="radioTipo" id="tipoRadioGasto" value="GASTO" checked onchange="alCambiarTipoModal('GASTO')">
+              <label class="btn btn-sm rounded-pill fw-bold py-2 font-numeric" for="tipoRadioGasto">
+                <i class="bi bi-arrow-up-right me-1 text-danger"></i> Gasto Fijo
+              </label>
+
+              <input type="radio" class="btn-check" name="radioTipo" id="tipoRadioEntrada" value="ENTRADA" onchange="alCambiarTipoModal('ENTRADA')">
+              <label class="btn btn-sm rounded-pill fw-bold py-2 font-numeric" for="tipoRadioEntrada">
+                <i class="bi bi-arrow-down-left me-1 text-success"></i> Entrada Fija
+              </label>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            
+            <!-- Concepto / Descripción -->
+            <div class="col-md-7">
+              <label class="form-label small fw-bold text-secondary">Concepto o Descripción <span class="text-danger">*</span></label>
+              <input type="text" id="inputConcepto" class="form-control rounded-3" placeholder="Ej: Seguro del Carro, Alquiler, Sueldo Principal, Netflix..." required>
+            </div>
+
+            <!-- Categoría -->
+            <div class="col-md-5">
+              <label class="form-label small fw-bold text-secondary">Categoría</label>
+              <select id="selectCategoria" class="form-select rounded-3">
+                <!-- Poblado dinámicamente según sea Gasto o Entrada -->
+              </select>
+            </div>
+
+            <!-- Moneda -->
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-secondary">Moneda</label>
+              <select id="selectMoneda" class="form-select rounded-3 font-numeric" onchange="actualizarCalculoEnVivoModal()">
+                <option value="USD">Dólares ($ USD)</option>
+                <option value="BS">Bolívares (Bs)</option>
+                <option value="USDT">Binance (USDT)</option>
+              </select>
+            </div>
+
+            <!-- Monto Original -->
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-secondary">Monto Original <span class="text-danger">*</span></label>
+              <input type="number" step="any" min="0.01" id="inputMontoOriginal" class="form-control rounded-3 font-numeric fw-bold text-primary" placeholder="0.00" required oninput="actualizarCalculoEnVivoModal()">
+            </div>
+
+            <!-- Frecuencia -->
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-secondary">Frecuencia de Pago <span class="text-danger">*</span></label>
+              <select id="selectFrecuencia" class="form-select rounded-3 fw-semibold text-dark font-numeric" onchange="actualizarCalculoEnVivoModal()">
+                <option value="DIARIO">Diario (Día a día)</option>
+                <option value="SEMANAL">Semanal (Cada 7 días)</option>
+                <option value="QUINCENAL">Quincenal (Cada 15 días)</option>
+                <option value="MENSUAL" selected>Mensual (1 vez al mes)</option>
+                <option value="BIMESTRAL">Bimestral (Cada 2 meses)</option>
+                <option value="TRIMESTRAL">Trimestral (Cada 3 meses)</option>
+                <option value="SEMESTRAL">Semestral (Cada 6 meses)</option>
+                <option value="ANUAL">Anual (1 vez al año)</option>
+              </select>
+            </div>
+
+            <!-- Tasa de Cambio (visible si es Bs) -->
+            <div class="col-md-6" id="divCampoTasa" style="display: none;">
+              <label class="form-label small fw-bold text-secondary">Tasa de Cambio (Bs / USD)</label>
+              <div class="input-group">
+                <input type="number" step="any" min="0.01" id="inputTasaCambio" class="form-control font-numeric" placeholder="872.40" oninput="actualizarCalculoEnVivoModal()">
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="usarTasaBCVModal()" title="Usar tasa BCV activa">Usar BCV</button>
+              </div>
+            </div>
+
+            <!-- Día habitual de cobro / pago -->
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-secondary">Día habitual de cobro / pago (opcional)</label>
+              <input type="number" min="1" max="31" id="inputDiaPago" class="form-control font-numeric" placeholder="Ej: 5, 15, 30...">
+            </div>
+
+            <!-- Notas -->
+            <div class="col-12">
+              <label class="form-label small fw-bold text-secondary">Notas / Observaciones adicionales</label>
+              <input type="text" id="inputNotas" class="form-control rounded-3" placeholder="Ej: Póliza vence en Noviembre, contrato a 1 año...">
+            </div>
+
+          </div>
+
+          <!-- =========================================================================
+               CAJA DE PREVISUALIZACIÓN MATEMÁTICA EN VIVO
+               ========================================================================= -->
+          <div class="modal-preview-math mt-4">
+            <div class="d-flex align-items-center justify-content-between mb-2.5">
+              <span class="text-uppercase text-secondary fw-bold font-numeric" style="font-size: 0.72rem;">
+                <i class="bi bi-calculator me-1 text-primary"></i> Normalización Matemática Automática
+              </span>
+              <span class="badge bg-primary bg-opacity-10 text-primary font-numeric px-2.5 py-0.5 fw-semibold" style="font-size: 0.72rem;">Fórmula Financiera</span>
+            </div>
+
+            <div class="row g-2 font-numeric">
+              <div class="col-4">
+                <div class="preview-pill-box">
+                  <div class="text-muted" style="font-size: 0.68rem;">EQUIVALENTE DÍA</div>
+                  <div class="fw-bold fs-6 text-dark" id="previewDia">$0.00</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="preview-pill-box" style="background: #eff6ff !important; border-color: rgba(59, 130, 246, 0.3) !important;">
+                  <div class="text-primary fw-bold" style="font-size: 0.68rem;">EQUIVALENTE MES</div>
+                  <div class="fw-bold fs-5 text-primary" id="previewMes">$0.00</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="preview-pill-box">
+                  <div class="text-muted" style="font-size: 0.68rem;">EQUIVALENTE AÑO</div>
+                  <div class="fw-bold fs-6 text-dark" id="previewAno">$0.00</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-muted small mt-2.5 text-center font-numeric" style="font-size: 0.74rem;" id="previewExplicacionTexto">
+              Ingresa un monto para ver la equivalencia automática.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-top px-4 py-3 bg-light d-flex justify-content-between">
+          <button type="button" class="btn btn-light border rounded-pill px-3 py-1.5 fw-semibold text-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary rounded-pill px-4 py-1.5 fw-semibold d-flex align-items-center gap-2 shadow-sm" id="btnGuardarModal">
+            <i class="bi bi-check-circle-fill"></i> Guardar Ítem Fijo
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  /* ==========================================================================
+     PROYECCIÓN FINANCIERA — Lógica Reactiva de Alta Gama
+     ========================================================================== */
+
+  let PROYECCION_DATA = {
+    escala: 'MENSUAL', // 'MENSUAL' o 'ANUAL'
+    tasa_bcv: 1.0,
+    kpis: {},
+    entradas: [],
+    gastos: [],
+    distribucion_gastos: {},
+    distribucion_entradas: {}
+  };
+
+  let FILTRO_ENTRADAS_TEXTO = '';
+  let FILTRO_GASTOS_TEXTO = '';
+
+  const CATEGORIAS_GASTO = [
+    'Vivienda (Alquiler / Hipoteca / Condominio)',
+    'Servicios Básicos (Luz, Agua, Gas, Aseo)',
+    'Telecomunicaciones (Internet, Telefonía, Móvil)',
+    'Alimentación & Despensa Fija',
+    'Transporte & Combustible Fijo',
+    'Seguros & Salud (Póliza HCM, Seguro Auto, Medicinas)',
+    'Suscripciones & Software (Streaming, Gym, Software)',
+    'Educación & Colegiaturas',
+    'Deudas & Cuotas de Crédito',
+    'Mascotas (Alimento & Salud recurrente)',
+    'Otros Gastos Fijos'
+  ];
+
+  const CATEGORIAS_ENTRADA = [
+    'Sueldo / Salario Principal',
+    'Honorarios / Clientes Fijos',
+    'Rentas / Alquileres Cobrados',
+    'Rendimientos / Dividendos',
+    'Pensión / Jubilación',
+    'Remesas Familiares Recurrentes',
+    'Otras Entradas Fijas'
+  ];
+
+  const FACTORES_MATEMATICOS = {
+    'DIARIO': 365.0 / 12.0,
+    'SEMANAL': 52.0 / 12.0,
+    'QUINCENAL': 2.0,
+    'MENSUAL': 1.0,
+    'BIMESTRAL': 1.0 / 2.0,
+    'TRIMESTRAL': 1.0 / 3.0,
+    'SEMESTRAL': 1.0 / 6.0,
+    'ANUAL': 1.0 / 12.0
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cargarProyeccionCompleta();
+  });
+
+  // 1. Cargar datos del servidor
+  async function cargarProyeccionCompleta() {
+    try {
+      const res = await fetch('/api/proyeccion/resumen');
+      const data = await res.json();
+      if (!data.success) {
+        showToast(data.error || 'Error al cargar resumen de proyección', 'error');
+        return;
+      }
+
+      PROYECCION_DATA.tasa_bcv = data.tasa_bcv || 1.0;
+      PROYECCION_DATA.kpis = data.kpis || {};
+      PROYECCION_DATA.entradas = data.entradas || [];
+      PROYECCION_DATA.gastos = data.gastos || [];
+      PROYECCION_DATA.distribucion_gastos = data.distribucion_gastos || {};
+      PROYECCION_DATA.distribucion_entradas = data.distribucion_entradas || {};
+
+      const txtTasa = document.getElementById('txtTasaBCVHero');
+      if (txtTasa) txtTasa.innerText = `BCV: ${PROYECCION_DATA.tasa_bcv.toFixed(2)} Bs`;
+
+      renderizarVistaSegunEscala();
+    } catch (e) {
+      console.error(e);
+      showToast('Error de conexión con el servidor', 'error');
+    }
+  }
+
+  // 2. Alternar escala (Mensual vs Anual)
+  function cambiarEscala(nuevaEscala) {
+    PROYECCION_DATA.escala = nuevaEscala;
+    
+    const btnM = document.getElementById('btnScaleMensual');
+    const btnA = document.getElementById('btnScaleAnual');
+    if (nuevaEscala === 'MENSUAL') {
+      btnM.classList.add('active');
+      btnA.classList.remove('active');
+    } else {
+      btnA.classList.add('active');
+      btnM.classList.remove('active');
+    }
+
+    const lblGraph = document.getElementById('lblEscalaActivaGraph');
+    if (lblGraph) lblGraph.innerText = `Escala: ${nuevaEscala === 'MENSUAL' ? 'Mensual' : 'Anual'}`;
+
+    document.querySelectorAll('.lblEscalaTexto').forEach(el => {
+      el.innerText = nuevaEscala === 'MENSUAL' ? 'Mes' : 'Año';
+    });
+
+    renderizarVistaSegunEscala();
+  }
+
+  // 3. Renderizar todos los elementos según la escala activa
+  function renderizarVistaSegunEscala() {
+    const escala = PROYECCION_DATA.escala;
+    const esAnual = (escala === 'ANUAL');
+    const kpis = PROYECCION_DATA.kpis || {};
+
+    const entVal = esAnual ? (kpis.entradas_anual || 0) : (kpis.entradas_mensual || 0);
+    const entAlt = esAnual ? (kpis.entradas_mensual || 0) : (kpis.entradas_anual || 0);
+
+    const gasVal = esAnual ? (kpis.gastos_anual || 0) : (kpis.gastos_mensual || 0);
+    const gasAlt = esAnual ? (kpis.gastos_mensual || 0) : (kpis.gastos_anual || 0);
+
+    const marVal = esAnual ? (kpis.margen_libre_anual || 0) : (kpis.margen_libre_mensual || 0);
+    const marAlt = esAnual ? (kpis.margen_libre_mensual || 0) : (kpis.margen_libre_anual || 0);
+
+    // KPI 1: Entradas
+    document.getElementById('kpiEntradasVal').innerText = formatUSD(entVal);
+    document.getElementById('kpiEntradasAlt').innerText = `${formatUSD(entAlt)} / ${esAnual ? 'mes' : 'año'}`;
+    document.getElementById('kpiEntradasCount').innerText = `${kpis.total_entradas_count || 0} activas`;
+    document.getElementById('kpiEntradasDiario').innerText = formatUSD(kpis.ingreso_diario_est || 0);
+
+    // KPI 2: Gastos
+    document.getElementById('kpiGastosVal').innerText = formatUSD(gasVal);
+    document.getElementById('kpiGastosAlt').innerText = `${formatUSD(gasAlt)} / ${esAnual ? 'mes' : 'año'}`;
+    document.getElementById('kpiGastosCount').innerText = `${kpis.total_gastos_count || 0} activos`;
+    document.getElementById('kpiGastosDiario').innerText = formatUSD(kpis.gasto_diario_est || 0);
+
+    // KPI 3: Margen Libre
+    const elMarVal = document.getElementById('kpiMargenVal');
+    const elMarBadge = document.getElementById('kpiMargenStatusBadge');
+    elMarVal.innerText = formatUSD(marVal);
+    document.getElementById('kpiMargenAlt').innerText = `${formatUSD(marAlt)} / ${esAnual ? 'mes' : 'año'}`;
+    document.getElementById('kpiTasaAhorroPct').innerText = `${kpis.tasa_ahorro_pct || 0}%`;
+
+    if (marVal >= 0) {
+      elMarVal.className = 'kpi-num-display text-primary mb-1';
+      elMarBadge.className = 'badge rounded-pill px-2.5 py-1 fw-bold font-numeric';
+      elMarBadge.style.background = '#dcfce7';
+      elMarBadge.style.color = '#15803d';
+      elMarBadge.innerText = 'Superávit Libre';
+    } else {
+      elMarVal.className = 'kpi-num-display text-danger mb-1';
+      elMarBadge.className = 'badge rounded-pill px-2.5 py-1 fw-bold font-numeric bg-danger text-white';
+      elMarBadge.innerText = 'Déficit Proyectado';
+    }
+
+    // KPI 4: Ratio de Cobertura
+    const ratio = kpis.ratio_cobertura || 0;
+    document.getElementById('kpiRatioVal').innerText = `${ratio.toFixed(2)}x`;
+    const txtRatioMsg = document.getElementById('kpiRatioMensaje');
+    if (ratio >= 2.0) {
+      txtRatioMsg.innerText = 'Excelente: Entradas duplican tus gastos fijos';
+      txtRatioMsg.className = 'small fw-bold text-success mb-2';
+    } else if (ratio >= 1.2) {
+      txtRatioMsg.innerText = 'Saludable: Capacidad adecuada de cobertura';
+      txtRatioMsg.className = 'small fw-semibold text-primary mb-2';
+    } else if (ratio >= 1.0) {
+      txtRatioMsg.innerText = 'Ajustado: Gastos fijos casi igualan tus ingresos';
+      txtRatioMsg.className = 'small fw-bold text-warning mb-2';
+    } else {
+      txtRatioMsg.innerText = 'Alerta: Tus compromisos fijos superan tus entradas';
+      txtRatioMsg.className = 'small fw-bold text-danger mb-2';
+    }
+
+    // Barra de absorción dual
+    const totalEnt = kpis.entradas_mensual || 0;
+    const totalGas = kpis.gastos_mensual || 0;
+    let pctComprometido = 0;
+    if (totalEnt > 0) {
+      pctComprometido = Math.min(Math.round((totalGas / totalEnt) * 100), 100);
+    } else if (totalGas > 0) {
+      pctComprometido = 100;
+    }
+    const pctLibre = Math.max(100 - pctComprometido, 0);
+
+    const barAbs = document.getElementById('barAbsorcionFill');
+    barAbs.style.width = `${pctComprometido}%`;
+    barAbs.className = pctComprometido > 70 ? 'flow-track-fill bg-danger' : (pctComprometido > 50 ? 'flow-track-fill bg-warning' : 'flow-track-fill bg-success');
+
+    document.getElementById('lblPorcentajeComprometido').innerText = `${pctComprometido}%`;
+    document.getElementById('lblPorcentajeLibre').innerText = `${pctLibre}%`;
+
+    // Regla 50/30/20 widget
+    document.getElementById('txtReglaPct').innerText = `${pctComprometido}%`;
+    const txtInter = document.getElementById('txtReglaInterpretacion');
+    if (pctComprometido <= 50) {
+      txtInter.innerText = 'Excelente: Cumples la regla ideal de compromisos fijos (< 50%), manteniendo alta solvencia.';
+    } else if (pctComprometido <= 70) {
+      txtInter.innerText = 'Moderado: Tus gastos fijos superan el umbral recomendado del 50%. Vigila compromisos no esenciales.';
+    } else {
+      txtInter.innerText = 'Riesgo: Más del 70% de tus ingresos fijos ya está atado antes de iniciar el mes. Te conviene podar gastos.';
+    }
+
+    // Gráficos de Barra
+    const maxVal = Math.max(entVal, gasVal, 1);
+    document.getElementById('barValEntradas').innerText = formatUSD(entVal);
+    document.getElementById('barValGastos').innerText = formatUSD(gasVal);
+    document.getElementById('barValMargen').innerText = formatUSD(marVal);
+
+    document.getElementById('barFillEntradas').style.width = `${Math.round((entVal / maxVal) * 100)}%`;
+    document.getElementById('barFillGastos').style.width = `${Math.round((gasVal / maxVal) * 100)}%`;
+    document.getElementById('barFillMargen').style.width = marVal > 0 ? `${Math.round((marVal / maxVal) * 100)}%` : '0%';
+
+    // Subtotales en las columnas gemelas
+    document.getElementById('subtotalEntradasHeader').innerText = formatUSD(entVal);
+    document.getElementById('subtotalGastosHeader').innerText = formatUSD(gasVal);
+
+    // Renderizar distribuciones y tarjetas
+    renderizarDistribucionCategorias();
+    renderizarListaEntradas();
+    renderizarListaGastos();
+  }
+
+  // 4. Renderizar desglose de categorías de gastos
+  function renderizarDistribucionCategorias() {
+    const contenedor = document.getElementById('contenedorDistribucionCategorias');
+    const catGastos = PROYECCION_DATA.distribucion_gastos || {};
+    const totalGastos = PROYECCION_DATA.kpis.gastos_mensual || 0;
+    const esAnual = (PROYECCION_DATA.escala === 'ANUAL');
+
+    const entries = Object.entries(catGastos).sort((a, b) => b[1] - a[1]);
+    if (entries.length === 0) {
+      contenedor.innerHTML = '<div class="text-center py-4 text-muted small">No hay gastos fijos activos para analizar.</div>';
+      return;
+    }
+
+    let html = '';
+    entries.forEach(([cat, montoMen]) => {
+      const montoMostrar = esAnual ? (montoMen * 12) : montoMen;
+      const pct = totalGastos > 0 ? Math.round((montoMen / totalGastos) * 100) : 0;
+      html += `
+        <div class="category-pill-item">
+          <div class="d-flex justify-content-between align-items-center mb-1 font-numeric small">
+            <span class="fw-semibold text-dark text-truncate me-2" style="max-width: 220px;" title="${cat}">
+              <i class="bi bi-tag text-danger me-1"></i> ${cat}
+            </span>
+            <span class="fw-bold text-danger">${formatUSD(montoMostrar)} <span class="text-muted fw-normal" style="font-size: 0.72rem;">(${pct}%)</span></span>
+          </div>
+          <div class="flow-track-pill" style="height: 6px;">
+            <div class="flow-track-fill bg-danger" style="width: ${pct}%;"></div>
+          </div>
+        </div>
+      `;
+    });
+
+    contenedor.innerHTML = html;
+  }
+
+  // 5. Renderizar lista de entradas fijas con filtro
+  function renderizarListaEntradas() {
+    const contenedor = document.getElementById('listaEntradasContainer');
+    let items = PROYECCION_DATA.entradas || [];
+    const esAnual = (PROYECCION_DATA.escala === 'ANUAL');
+
+    if (FILTRO_ENTRADAS_TEXTO) {
+      const q = FILTRO_ENTRADAS_TEXTO.toLowerCase();
+      items = items.filter(x => x.concepto.toLowerCase().includes(q) || x.categoria.toLowerCase().includes(q) || x.frecuencia.toLowerCase().includes(q));
+    }
+
+    if (items.length === 0) {
+      contenedor.innerHTML = `
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-wallet2 fs-2 text-success opacity-50 mb-2 d-block"></i>
+          <p class="small mb-2">${FILTRO_ENTRADAS_TEXTO ? 'No se encontraron entradas con ese término.' : 'No has registrado entradas fijas recurrentes.'}</p>
+          <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 py-1 font-numeric fw-semibold" onclick="abrirModalCrear('ENTRADA')">
+            + Agregar mi primera entrada
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    let html = '';
+    items.forEach(it => {
+      const montoMostrar = esAnual ? it.monto_anual_usd : it.monto_mensual_usd;
+      const montoAlt = esAnual ? it.monto_mensual_usd : it.monto_anual_usd;
+      const claseInactivo = it.activo ? '' : 'is-inactive';
+      const badgeClase = `badge-freq-tactile freq-${it.frecuencia.toLowerCase()}`;
+
+      html += `
+        <div class="forecast-item-card ${claseInactivo}" id="itemCard-${it.id}">
+          <div class="d-flex align-items-start justify-content-between gap-2">
+            
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center gap-1.5 mb-1.5 flex-wrap">
+                <span class="${badgeClase}">${it.frecuencia}</span>
+                <span class="badge bg-light text-secondary border rounded-pill font-numeric" style="font-size: 0.68rem;">${it.categoria}</span>
+                ${it.dia_pago ? `<span class="badge bg-light text-muted border rounded-pill font-numeric" style="font-size: 0.68rem;"><i class="bi bi-calendar-event me-1"></i>Día ${it.dia_pago}</span>` : ''}
+              </div>
+              
+              <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.95rem;">${escapeHtml(it.concepto)}</h6>
+              
+              <div class="text-muted font-numeric small mt-0.5" style="font-size: 0.74rem;">
+                Original: <strong class="text-dark">${it.monto_original.toLocaleString('es-VE', {minimumFractionDigits: 2})} ${it.moneda}</strong>
+                ${it.moneda === 'BS' ? `<span class="text-secondary">(Tasa: ${it.tasa.toFixed(2)})</span>` : ''}
+              </div>
+            </div>
+
+            <!-- Columna Monto Normalizado & Switch -->
+            <div class="text-end font-numeric">
+              <div class="fw-bold text-success fs-6">${formatUSD(montoMostrar)}</div>
+              <div class="text-muted" style="font-size: 0.72rem;">${formatUSD(montoAlt)} / ${esAnual ? 'mes' : 'año'}</div>
+              <div class="form-check form-switch d-inline-block mt-1" title="Activar/Desactivar para simular escenarios sin borrar">
+                <input class="form-check-input" type="checkbox" role="switch" ${it.activo ? 'checked' : ''} onchange="toggleItemActivo(${it.id})">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Acciones Editar / Eliminar -->
+          <div class="d-flex align-items-center justify-content-between pt-2 mt-2 border-top">
+            <span class="text-muted small fst-italic text-truncate me-2" style="font-size: 0.72rem; max-width: 250px;">
+              ${it.notas ? escapeHtml(it.notas) : (it.activo ? 'Activo en previsión' : 'Pausado (Simulación)')}
+            </span>
+            <div class="d-flex gap-1">
+              <button type="button" class="btn btn-sm btn-light border rounded-pill px-2.5 py-0.5 text-secondary" onclick="abrirModalEditar(${it.id})" title="Editar"><i class="bi bi-pencil-square"></i></button>
+              <button type="button" class="btn btn-sm btn-light border rounded-pill px-2.5 py-0.5 text-danger" onclick="eliminarItem(${it.id})" title="Eliminar"><i class="bi bi-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    contenedor.innerHTML = html;
+  }
+
+  // 6. Renderizar lista de gastos fijos con filtro
+  function renderizarListaGastos() {
+    const contenedor = document.getElementById('listaGastosContainer');
+    let items = PROYECCION_DATA.gastos || [];
+    const esAnual = (PROYECCION_DATA.escala === 'ANUAL');
+
+    if (FILTRO_GASTOS_TEXTO) {
+      const q = FILTRO_GASTOS_TEXTO.toLowerCase();
+      items = items.filter(x => x.concepto.toLowerCase().includes(q) || x.categoria.toLowerCase().includes(q) || x.frecuencia.toLowerCase().includes(q));
+    }
+
+    if (items.length === 0) {
+      contenedor.innerHTML = `
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-receipt-cutoff fs-2 text-danger opacity-50 mb-2 d-block"></i>
+          <p class="small mb-2">${FILTRO_GASTOS_TEXTO ? 'No se encontraron gastos con ese término.' : 'No has registrado gastos fijos recurrentes.'}</p>
+          <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 font-numeric fw-semibold" onclick="abrirModalCrear('GASTO')">
+            + Agregar mi primer gasto fijo
+          </button>
+        </div>
+      `;
+      return;
+    }
+
+    let html = '';
+    items.forEach(it => {
+      const montoMostrar = esAnual ? it.monto_anual_usd : it.monto_mensual_usd;
+      const montoAlt = esAnual ? it.monto_mensual_usd : it.monto_anual_usd;
+      const claseInactivo = it.activo ? '' : 'is-inactive';
+      const badgeClase = `badge-freq-tactile freq-${it.frecuencia.toLowerCase()}`;
+
+      html += `
+        <div class="forecast-item-card ${claseInactivo}" id="itemCard-${it.id}">
+          <div class="d-flex align-items-start justify-content-between gap-2">
+            
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center gap-1.5 mb-1.5 flex-wrap">
+                <span class="${badgeClase}">${it.frecuencia}</span>
+                <span class="badge bg-light text-secondary border rounded-pill font-numeric" style="font-size: 0.68rem;">${it.categoria}</span>
+                ${it.dia_pago ? `<span class="badge bg-light text-muted border rounded-pill font-numeric" style="font-size: 0.68rem;"><i class="bi bi-calendar-event me-1"></i>Día ${it.dia_pago}</span>` : ''}
+              </div>
+              
+              <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.95rem;">${escapeHtml(it.concepto)}</h6>
+              
+              <div class="text-muted font-numeric small mt-0.5" style="font-size: 0.74rem;">
+                Original: <strong class="text-dark">${it.monto_original.toLocaleString('es-VE', {minimumFractionDigits: 2})} ${it.moneda}</strong>
+                ${it.moneda === 'BS' ? `<span class="text-secondary">(Tasa: ${it.tasa.toFixed(2)})</span>` : ''}
+              </div>
+            </div>
+
+            <!-- Columna Monto Normalizado & Switch -->
+            <div class="text-end font-numeric">
+              <div class="fw-bold text-danger fs-6">${formatUSD(montoMostrar)}</div>
+              <div class="text-muted" style="font-size: 0.72rem;">${formatUSD(montoAlt)} / ${esAnual ? 'mes' : 'año'}</div>
+              <div class="form-check form-switch d-inline-block mt-1" title="Activar/Desactivar para simular escenarios sin borrar">
+                <input class="form-check-input" type="checkbox" role="switch" ${it.activo ? 'checked' : ''} onchange="toggleItemActivo(${it.id})">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Acciones Editar / Eliminar -->
+          <div class="d-flex align-items-center justify-content-between pt-2 mt-2 border-top">
+            <span class="text-muted small fst-italic text-truncate me-2" style="font-size: 0.72rem; max-width: 250px;">
+              ${it.notas ? escapeHtml(it.notas) : (it.activo ? 'Activo en previsión' : 'Pausado (Simulación)')}
+            </span>
+            <div class="d-flex gap-1">
+              <button type="button" class="btn btn-sm btn-light border rounded-pill px-2.5 py-0.5 text-secondary" onclick="abrirModalEditar(${it.id})" title="Editar"><i class="bi bi-pencil-square"></i></button>
+              <button type="button" class="btn btn-sm btn-light border rounded-pill px-2.5 py-0.5 text-danger" onclick="eliminarItem(${it.id})" title="Eliminar"><i class="bi bi-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    contenedor.innerHTML = html;
+  }
+
+  // 7. Filtros instantáneos en cliente
+  function filtrarListaEntradas(val) {
+    FILTRO_ENTRADAS_TEXTO = (val || '').trim();
+    renderizarListaEntradas();
+  }
+
+  function filtrarListaGastos(val) {
+    FILTRO_GASTOS_TEXTO = (val || '').trim();
+    renderizarListaGastos();
+  }
+
+  // 8. Abrir modal para crear
+  function abrirModalCrear(tipoDefault = 'GASTO') {
+    document.getElementById('inputIdItem').value = '';
+    document.getElementById('modalItemTitulo').innerHTML = '<i class="bi bi-plus-circle text-primary"></i> <span>Registrar Movimiento Recurrente</span>';
+    
+    if (tipoDefault === 'ENTRADA') {
+      document.getElementById('tipoRadioEntrada').checked = true;
+      alCambiarTipoModal('ENTRADA');
+    } else {
+      document.getElementById('tipoRadioGasto').checked = true;
+      alCambiarTipoModal('GASTO');
+    }
+
+    document.getElementById('inputConcepto').value = '';
+    document.getElementById('inputMontoOriginal').value = '';
+    document.getElementById('selectMoneda').value = 'USD';
+    document.getElementById('selectFrecuencia').value = 'MENSUAL';
+    document.getElementById('inputTasaCambio').value = PROYECCION_DATA.tasa_bcv || 1.0;
+    document.getElementById('inputDiaPago').value = '';
+    document.getElementById('inputNotas').value = '';
+
+    actualizarCalculoEnVivoModal();
+
+    const m = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalProyeccionItem'));
+    m.show();
+  }
+
+  // 9. Abrir modal para editar
+  function abrirModalEditar(id) {
+    const item = [...PROYECCION_DATA.entradas, ...PROYECCION_DATA.gastos].find(x => x.id === id);
+    if (!item) return;
+
+    document.getElementById('inputIdItem').value = item.id;
+    document.getElementById('modalItemTitulo').innerHTML = '<i class="bi bi-pencil-square text-primary"></i> <span>Editar Movimiento Recurrente</span>';
+
+    if (item.tipo === 'ENTRADA') {
+      document.getElementById('tipoRadioEntrada').checked = true;
+      alCambiarTipoModal('ENTRADA');
+    } else {
+      document.getElementById('tipoRadioGasto').checked = true;
+      alCambiarTipoModal('GASTO');
+    }
+
+    document.getElementById('inputConcepto').value = item.concepto;
+    document.getElementById('selectCategoria').value = item.categoria;
+    document.getElementById('selectMoneda').value = item.moneda;
+    document.getElementById('inputMontoOriginal').value = item.monto_original;
+    document.getElementById('selectFrecuencia').value = item.frecuencia;
+    document.getElementById('inputTasaCambio').value = item.tasa;
+    document.getElementById('inputDiaPago').value = item.dia_pago || '';
+    document.getElementById('inputNotas').value = item.notas || '';
+
+    actualizarCalculoEnVivoModal();
+
+    const m = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalProyeccionItem'));
+    m.show();
+  }
+
+  // 10. Cambiar opciones de categoría según tipo
+  function alCambiarTipoModal(tipo) {
+    const selCat = document.getElementById('selectCategoria');
+    selCat.innerHTML = '';
+    const cats = (tipo === 'ENTRADA') ? CATEGORIAS_ENTRADA : CATEGORIAS_GASTO;
+    cats.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      selCat.appendChild(opt);
+    });
+    actualizarCalculoEnVivoModal();
+  }
+
+  // 11. Actualizar caja de previsualización matemática en tiempo real
+  function actualizarCalculoEnVivoModal() {
+    const moneda = document.getElementById('selectMoneda').value;
+    const divTasa = document.getElementById('divCampoTasa');
+    divTasa.style.display = (moneda === 'BS') ? 'block' : 'none';
+
+    const montoOrig = parseFloat(document.getElementById('inputMontoOriginal').value) || 0;
+    const frec = document.getElementById('selectFrecuencia').value;
+    const tasa = parseFloat(document.getElementById('inputTasaCambio').value) || PROYECCION_DATA.tasa_bcv || 1.0;
+    const factor = FACTORES_MATEMATICOS[frec] || 1.0;
+
+    let montoUsdBase = montoOrig;
+    if (moneda === 'BS') {
+      montoUsdBase = (tasa > 0) ? (montoOrig / tasa) : 0;
+    }
+
+    const montoMen = Math.round(montoUsdBase * factor * 100) / 100;
+    const montoAno = Math.round(montoMen * 12 * 100) / 100;
+    const montoDia = Math.round((montoMen / (365 / 12)) * 100) / 100;
+
+    document.getElementById('previewMes').innerText = formatUSD(montoMen);
+    document.getElementById('previewAno').innerText = formatUSD(montoAno);
+    document.getElementById('previewDia').innerText = formatUSD(montoDia);
+
+    const txtExpl = document.getElementById('previewExplicacionTexto');
+    if (montoOrig > 0) {
+      txtExpl.innerHTML = `Ingresando <strong>${montoOrig.toLocaleString('es-VE')} ${moneda}</strong> (${frec.toLowerCase()}) equivale exactamente a <strong>${formatUSD(montoMen)} cada mes</strong>.`;
+    } else {
+      txtExpl.innerText = 'Ingresa un monto para ver la equivalencia automática.';
+    }
+  }
+
+  function usarTasaBCVModal() {
+    document.getElementById('inputTasaCambio').value = PROYECCION_DATA.tasa_bcv || 1.0;
+    actualizarCalculoEnVivoModal();
+  }
+
+  // 12. Guardar ítem (Crear o Editar)
+  async function guardarItemProyeccion(e) {
+    e.preventDefault();
+    const id = document.getElementById('inputIdItem').value;
+    const tipo = document.querySelector('input[name="radioTipo"]:checked').value;
+    const concepto = document.getElementById('inputConcepto').value.trim();
+    const categoria = document.getElementById('selectCategoria').value;
+    const moneda = document.getElementById('selectMoneda').value;
+    const montoOrig = parseFloat(document.getElementById('inputMontoOriginal').value) || 0;
+    const frecuencia = document.getElementById('selectFrecuencia').value;
+    const tasa = parseFloat(document.getElementById('inputTasaCambio').value) || 1.0;
+    const diaPago = document.getElementById('inputDiaPago').value ? parseInt(document.getElementById('inputDiaPago').value) : null;
+    const notas = document.getElementById('inputNotas').value.trim();
+
+    if (!concepto) {
+      showToast('El concepto es obligatorio', 'warning');
+      return;
+    }
+    if (montoOrig <= 0) {
+      showToast('Por favor introduce un monto mayor a 0', 'warning');
+      return;
+    }
+
+    const btn = document.getElementById('btnGuardarModal');
+    btn.disabled = true;
+
+    try {
+      const url = id ? `/api/proyeccion/item/${id}` : '/api/proyeccion/item';
+      const method = id ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tipo: tipo,
+          concepto: concepto,
+          categoria: categoria,
+          moneda: moneda,
+          monto_original: montoOrig,
+          frecuencia: frecuencia,
+          tasa: tasa,
+          dia_pago: diaPago,
+          notas: notas
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.mensaje || 'Guardado exitosamente', 'success');
+        const modalEl = document.getElementById('modalProyeccionItem');
+        const m = bootstrap.Modal.getInstance(modalEl);
+        if (m) m.hide();
+        await cargarProyeccionCompleta();
+      } else {
+        showToast(data.error || 'Error al guardar', 'error');
+      }
+    } catch (e) {
+      console.error(e);
+      showToast('Error de conexión al guardar', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // 13. Toggle interactivo de simulación Activo / Inactivo
+  async function toggleItemActivo(id) {
+    try {
+      const res = await fetch(`/api/proyeccion/item/${id}/toggle`, {
+        method: 'PATCH'
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.mensaje, 'info');
+        await cargarProyeccionCompleta();
+      } else {
+        showToast(data.error || 'No se pudo actualizar estado', 'error');
+      }
+    } catch (e) {
+      console.error(e);
+      showToast('Error al alternar estado del ítem', 'error');
+    }
+  }
+
+  // 14. Eliminar ítem
+  async function eliminarItem(id) {
+    if (!confirm('¿Deseas eliminar este compromiso de tu proyección fija?')) return;
+    try {
+      const res = await fetch(`/api/proyeccion/item/${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.mensaje || 'Ítem eliminado', 'info');
+        await cargarProyeccionCompleta();
+      } else {
+        showToast(data.error || 'Error al eliminar', 'error');
+      }
+    } catch (e) {
+      console.error(e);
+      showToast('Error de conexión', 'error');
+    }
+  }
+
+  // 15. Recalcular ítems en Bolívares con la tasa BCV más reciente
+  async function recalcularConTasasBCV() {
+    const icon = document.getElementById('iconRecalcularTasas');
+    if (icon) icon.classList.add('spin-animation');
+
+    try {
+      showToast('Sincronizando tasas y recalculando proyección...', 'info');
+      await fetch('/api/tasas/actualizar', { method: 'POST' });
+      const res = await fetch('/api/proyeccion/recalcular-tasas', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.mensaje, 'success');
+        await cargarProyeccionCompleta();
+      } else {
+        showToast(data.error || 'Error al recalcular', 'warning');
+      }
+    } catch (e) {
+      console.error(e);
+      showToast('Error al sincronizar tasas con el servidor', 'error');
+    } finally {
+      if (icon) icon.classList.remove('spin-animation');
+    }
+  }
+
+  // Utilidades de formato
+  function formatUSD(val) {
+    const num = parseFloat(val) || 0;
+    return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+    });
+  }
+</script>
+{% endblock %}

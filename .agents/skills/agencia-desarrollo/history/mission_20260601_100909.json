@@ -1,0 +1,241 @@
+{
+    "timestamp": "2026-06-01T10:09:09.434175",
+    "mision": "Corregir subcategor\u00eda en respaldo offline y habilitar m\u00f3dulo de pedidos con carrito y env\u00edo por WhatsApp",
+    "global_context": {
+        "stack_tecnologico": [
+            "Python (requirements.txt)",
+            "Flask/Python Web App"
+        ],
+        "esquema_db_actual": {
+            "usuarios": [
+                "id",
+                "username",
+                "password_hash",
+                "role"
+            ],
+            "inventario": [
+                "id",
+                "categoria",
+                "subcategoria",
+                "aplicacion",
+                "descripcion",
+                "marca",
+                "medida_variante",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "existencia",
+                "proveedor",
+                "codigo_principal",
+                "codigos_alternativos"
+            ],
+            "repuestos": [
+                "id",
+                "codigo_principal",
+                "codigos_alternativos",
+                "categoria",
+                "subcategoria",
+                "descripcion",
+                "aplicacion",
+                "medida_variante",
+                "unidad_empaque"
+            ],
+            "repuesto_variantes": [
+                "id",
+                "id_repuesto",
+                "marca",
+                "proveedor",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "costo_usd",
+                "existencia",
+                "FOREIGN"
+            ],
+            "configuracion": [
+                "id"
+            ],
+            "aplicaciones": [
+                "id",
+                "nombre"
+            ],
+            "unidades_empaque": [
+                "id",
+                "nombre"
+            ],
+            "historial_tasas": [
+                "id",
+                "fecha",
+                "tasa_bcv",
+                "tasa_bcv_euro",
+                "tasa_usdt"
+            ],
+            "historial_usdt_real": [
+                "id",
+                "fecha",
+                "tasa",
+                "tasa_compra"
+            ],
+            "ventas": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "tasa_bcv",
+                "tasa_usdt",
+                "delivery_usd",
+                "delivery_bs",
+                "tipo_delivery",
+                "usuario",
+                "ip",
+                "id_cliente",
+                "monto_pagado_usd",
+                "monto_pagado_bs",
+                "FOREIGN"
+            ],
+            "venta_detalles": [
+                "id",
+                "id_venta",
+                "id_producto",
+                "descripcion",
+                "cantidad",
+                "precio_unitario_usd",
+                "subtotal_usd",
+                "FOREIGN"
+            ],
+            "presupuestos": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "items_json",
+                "origen",
+                "tasa_bcv",
+                "tasa_usdt"
+            ],
+            "kits": [
+                "id",
+                "nombre",
+                "descripcion"
+            ],
+            "kit_items": [
+                "id",
+                "id_kit",
+                "id_repuesto",
+                "cantidad",
+                "FOREIGN"
+            ],
+            "proveedores": [
+                "id",
+                "nombre",
+                "rif",
+                "telefono",
+                "ubicacion",
+                "email"
+            ],
+            "devoluciones": [
+                "id",
+                "fecha",
+                "id_producto",
+                "producto_nombre",
+                "proveedor",
+                "cantidad",
+                "motivo",
+                "estado",
+                "nota",
+                "origen",
+                "--",
+                "--",
+                "--",
+                "'Descuento'",
+                "'Reingreso'"
+            ],
+            "historial_recepciones": [
+                "id",
+                "fecha",
+                "proveedor",
+                "numero_orden",
+                "total_items",
+                "UNIQUE(proveedor",
+                "numero_orden"
+            ],
+            "opciones_delivery": [
+                "id",
+                "nombre",
+                "precio_usd",
+                "geojson",
+                "color"
+            ],
+            "pagos_motorizado": [
+                "id",
+                "id_venta",
+                "monto_usd",
+                "monto_bs",
+                "metodo_pago",
+                "fecha",
+                "FOREIGN"
+            ],
+            "clientes": [
+                "id",
+                "cedula",
+                "nombre",
+                "apellido",
+                "telefono",
+                "telefono2",
+                "email",
+                "direccion",
+                "tipo_cliente",
+                "notas",
+                "fecha_registro"
+            ],
+            "fallas_manuales": [
+                "id",
+                "fecha",
+                "descripcion",
+                "aplicacion",
+                "vendedor",
+                "estado"
+            ],
+            "notificaciones_agotados": [
+                "id",
+                "fecha",
+                "'localtime'"
+            ],
+            "audit_log": [
+                "id",
+                "fecha",
+                "'localtime'"
+            ],
+            "sesiones_activas": [
+                "id",
+                "user_id",
+                "session_token",
+                "ip",
+                "user_agent",
+                "inicio",
+                "'localtime'"
+            ]
+        },
+        "reglas_generales": [
+            "Mantener el c\u00f3digo limpio y documentado.",
+            "No borrar comentarios existentes.",
+            "Asegurar compatibilidad con el servidor Windows actual."
+        ]
+    },
+    "specialists": [
+        {
+            "titulo": "Ingeniero Fullstack",
+            "particular_context": "Encargado de la l\u00f3gica end-to-end.",
+            "archivos_impactados": [
+                "app.py",
+                "database.py"
+            ]
+        }
+    ],
+    "qa_protocol": {
+        "requires_user_approval": true,
+        "verification_steps": [
+            "Verificar que los nuevos cambios no rompan las rutas existentes.",
+            "Validar que la base de datos se migre correctamente si hay cambios.",
+            "Comprobar la responsividad de la UI."
+        ]
+    }
+}

@@ -1,0 +1,171 @@
+{
+    "timestamp": "2026-04-10T08:33:43.205538",
+    "mision": "Arreglar el problema de auto-scroll al editar un producto en el inventario que hace que se pierda la posici\u00f3n inicial.",
+    "global_context": {
+        "stack_tecnologico": [
+            "Python (requirements.txt)",
+            "Flask/Python Web App"
+        ],
+        "esquema_db_actual": {
+            "usuarios": [
+                "id",
+                "username",
+                "password_hash",
+                "role"
+            ],
+            "inventario": [
+                "id",
+                "categoria",
+                "subcategoria",
+                "aplicacion",
+                "descripcion",
+                "marca",
+                "medida_variante",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "existencia",
+                "proveedor",
+                "codigo_principal",
+                "codigos_alternativos"
+            ],
+            "configuracion": [
+                "id"
+            ],
+            "aplicaciones": [
+                "id",
+                "nombre"
+            ],
+            "historial_tasas": [
+                "id",
+                "fecha",
+                "tasa_bcv",
+                "tasa_bcv_euro",
+                "tasa_usdt"
+            ],
+            "ventas": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "tasa_bcv",
+                "tasa_usdt",
+                "delivery_usd",
+                "delivery_bs",
+                "tipo_delivery",
+                "usuario",
+                "ip",
+                "id_cliente",
+                "FOREIGN"
+            ],
+            "venta_detalles": [
+                "id",
+                "id_venta",
+                "id_producto",
+                "descripcion",
+                "cantidad",
+                "precio_unitario_usd",
+                "subtotal_usd",
+                "FOREIGN"
+            ],
+            "presupuestos": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "items_json",
+                "origen",
+                "tasa_bcv",
+                "tasa_usdt"
+            ],
+            "kits": [
+                "id",
+                "nombre",
+                "descripcion"
+            ],
+            "kit_items": [
+                "id",
+                "id_kit",
+                "id_producto",
+                "cantidad",
+                "FOREIGN"
+            ],
+            "proveedores": [
+                "id",
+                "nombre",
+                "rif",
+                "telefono",
+                "ubicacion",
+                "email"
+            ],
+            "devoluciones": [
+                "id",
+                "fecha",
+                "id_producto",
+                "producto_nombre",
+                "proveedor",
+                "cantidad",
+                "motivo",
+                "estado",
+                "nota",
+                "origen",
+                "--",
+                "--",
+                "--",
+                "'Descuento'",
+                "'Reingreso'"
+            ],
+            "historial_recepciones": [
+                "id",
+                "fecha",
+                "proveedor",
+                "numero_orden",
+                "total_items",
+                "UNIQUE(proveedor",
+                "numero_orden"
+            ],
+            "opciones_delivery": [
+                "id",
+                "nombre",
+                "precio_usd",
+                "geojson",
+                "color"
+            ],
+            "clientes": [
+                "id",
+                "cedula",
+                "nombre",
+                "apellido",
+                "telefono",
+                "telefono2",
+                "email",
+                "direccion",
+                "tipo_cliente",
+                "notas",
+                "fecha_registro"
+            ]
+        },
+        "reglas_generales": [
+            "Mantener el c\u00f3digo limpio y documentado.",
+            "No borrar comentarios existentes.",
+            "Asegurar compatibilidad con el servidor Windows actual."
+        ]
+    },
+    "specialists": [
+        {
+            "titulo": "Ingeniero Fullstack",
+            "particular_context": "Encargado de la l\u00f3gica end-to-end.",
+            "archivos_impactados": [
+                "app.py",
+                "database.py"
+            ]
+        }
+    ],
+    "qa_protocol": {
+        "requires_user_approval": true,
+        "verification_steps": [
+            "Verificar que los nuevos cambios no rompan las rutas existentes.",
+            "Validar que la base de datos se migre correctamente si hay cambios.",
+            "Comprobar la responsividad de la UI."
+        ]
+    }
+}

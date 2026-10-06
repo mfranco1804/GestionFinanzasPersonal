@@ -1,0 +1,190 @@
+{
+    "timestamp": "2026-04-11T22:19:00.515660",
+    "mision": "Modernizar el m\u00f3dulo de kits (combos) para incluir soporte completo de edici\u00f3n (creaci\u00f3n y actualizaci\u00f3n), mejorar la interfaz UI/UX con dise\u00f1o premium y optimizar el backend para transacciones de kits.",
+    "global_context": {
+        "stack_tecnologico": [
+            "Python (requirements.txt)",
+            "Flask/Python Web App"
+        ],
+        "esquema_db_actual": {
+            "usuarios": [
+                "id",
+                "username",
+                "password_hash",
+                "role"
+            ],
+            "inventario": [
+                "id",
+                "categoria",
+                "subcategoria",
+                "aplicacion",
+                "descripcion",
+                "marca",
+                "medida_variante",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "existencia",
+                "proveedor",
+                "codigo_principal",
+                "codigos_alternativos"
+            ],
+            "repuestos": [
+                "id",
+                "codigo_principal",
+                "codigos_alternativos",
+                "categoria",
+                "subcategoria",
+                "descripcion",
+                "aplicacion",
+                "medida_variante"
+            ],
+            "repuesto_variantes": [
+                "id",
+                "id_repuesto",
+                "marca",
+                "proveedor",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "existencia",
+                "FOREIGN"
+            ],
+            "configuracion": [
+                "id"
+            ],
+            "aplicaciones": [
+                "id",
+                "nombre"
+            ],
+            "historial_tasas": [
+                "id",
+                "fecha",
+                "tasa_bcv",
+                "tasa_bcv_euro",
+                "tasa_usdt"
+            ],
+            "ventas": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "tasa_bcv",
+                "tasa_usdt",
+                "delivery_usd",
+                "delivery_bs",
+                "tipo_delivery",
+                "usuario",
+                "ip",
+                "id_cliente",
+                "FOREIGN"
+            ],
+            "venta_detalles": [
+                "id",
+                "id_venta",
+                "id_producto",
+                "descripcion",
+                "cantidad",
+                "precio_unitario_usd",
+                "subtotal_usd",
+                "FOREIGN"
+            ],
+            "presupuestos": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "items_json",
+                "origen",
+                "tasa_bcv",
+                "tasa_usdt"
+            ],
+            "kits": [
+                "id",
+                "nombre",
+                "descripcion"
+            ],
+            "kit_items": [
+                "id",
+                "id_kit",
+                "id_producto",
+                "cantidad",
+                "FOREIGN"
+            ],
+            "proveedores": [
+                "id",
+                "nombre",
+                "rif",
+                "telefono",
+                "ubicacion",
+                "email"
+            ],
+            "devoluciones": [
+                "id",
+                "fecha",
+                "id_producto",
+                "producto_nombre",
+                "proveedor",
+                "cantidad",
+                "motivo",
+                "estado",
+                "nota",
+                "origen",
+                "--",
+                "--",
+                "--",
+                "'Descuento'",
+                "'Reingreso'"
+            ],
+            "historial_recepciones": [
+                "id",
+                "fecha",
+                "proveedor",
+                "numero_orden",
+                "total_items",
+                "UNIQUE(proveedor",
+                "numero_orden"
+            ],
+            "opciones_delivery": [
+                "id",
+                "nombre",
+                "precio_usd",
+                "geojson",
+                "color"
+            ],
+            "clientes": [
+                "id",
+                "cedula",
+                "nombre",
+                "apellido",
+                "telefono",
+                "telefono2",
+                "email",
+                "direccion",
+                "tipo_cliente",
+                "notas",
+                "fecha_registro"
+            ]
+        },
+        "reglas_generales": [
+            "Mantener el c\u00f3digo limpio y documentado.",
+            "No borrar comentarios existentes.",
+            "Asegurar compatibilidad con el servidor Windows actual."
+        ]
+    },
+    "specialists": [
+        {
+            "titulo": "Especialista Frontend",
+            "particular_context": "Tu objetivo es crear interfaces hermosas y responsivas. Usa los templates de base y los estilos existentes para mantener consistencia.",
+            "archivos_impactados": [
+                "templates/"
+            ]
+        }
+    ],
+    "qa_protocol": {
+        "requires_user_approval": true,
+        "verification_steps": [
+            "Verificar que los nuevos cambios no rompan las rutas existentes.",
+            "Validar que la base de datos se migre correctamente si hay cambios.",
+            "Comprobar la responsividad de la UI."
+        ]
+    }
+}

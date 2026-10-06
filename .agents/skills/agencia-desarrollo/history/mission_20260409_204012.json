@@ -1,0 +1,168 @@
+{
+    "timestamp": "2026-04-09T20:40:12.044393",
+    "mision": "Renombrar todas las ocurrencias de tasa_paralelo a tasa_usdt y de Paralelo a USDT en el c\u00f3digo, base de datos y UI, asegurando migraciones de DB y consistencia en el c\u00e1lculo de precios.",
+    "global_context": {
+        "stack_tecnologico": [
+            "Python (requirements.txt)",
+            "Flask/Python Web App"
+        ],
+        "esquema_db_actual": {
+            "usuarios": [
+                "id",
+                "username",
+                "password_hash",
+                "role"
+            ],
+            "inventario": [
+                "id",
+                "categoria",
+                "subcategoria",
+                "aplicacion",
+                "descripcion",
+                "marca",
+                "medida_variante",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "existencia",
+                "proveedor"
+            ],
+            "configuracion": [
+                "id"
+            ],
+            "aplicaciones": [
+                "id",
+                "nombre"
+            ],
+            "historial_tasas": [
+                "id",
+                "fecha",
+                "tasa_bcv",
+                "tasa_bcv_euro",
+                "tasa_paralelo"
+            ],
+            "ventas": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "tasa_bcv",
+                "tasa_paralelo",
+                "delivery_usd",
+                "delivery_bs",
+                "tipo_delivery",
+                "usuario",
+                "ip",
+                "id_cliente",
+                "FOREIGN"
+            ],
+            "venta_detalles": [
+                "id",
+                "id_venta",
+                "id_producto",
+                "descripcion",
+                "cantidad",
+                "precio_unitario_usd",
+                "subtotal_usd",
+                "FOREIGN"
+            ],
+            "presupuestos": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "items_json",
+                "origen",
+                "tasa_bcv",
+                "tasa_paralelo"
+            ],
+            "kits": [
+                "id",
+                "nombre",
+                "descripcion"
+            ],
+            "kit_items": [
+                "id",
+                "id_kit",
+                "id_producto",
+                "cantidad",
+                "FOREIGN"
+            ],
+            "proveedores": [
+                "id",
+                "nombre",
+                "rif",
+                "telefono",
+                "ubicacion",
+                "email"
+            ],
+            "devoluciones": [
+                "id",
+                "fecha",
+                "id_producto",
+                "producto_nombre",
+                "proveedor",
+                "cantidad",
+                "motivo",
+                "estado",
+                "nota",
+                "origen",
+                "--",
+                "--",
+                "--",
+                "'Descuento'",
+                "'Reingreso'"
+            ],
+            "historial_recepciones": [
+                "id",
+                "fecha",
+                "proveedor",
+                "numero_orden",
+                "total_items",
+                "UNIQUE(proveedor",
+                "numero_orden"
+            ],
+            "opciones_delivery": [
+                "id",
+                "nombre",
+                "precio_usd",
+                "geojson",
+                "color"
+            ],
+            "clientes": [
+                "id",
+                "cedula",
+                "nombre",
+                "apellido",
+                "telefono",
+                "telefono2",
+                "email",
+                "direccion",
+                "tipo_cliente",
+                "notas",
+                "fecha_registro"
+            ]
+        },
+        "reglas_generales": [
+            "Mantener el c\u00f3digo limpio y documentado.",
+            "No borrar comentarios existentes.",
+            "Asegurar compatibilidad con el servidor Windows actual."
+        ]
+    },
+    "specialists": [
+        {
+            "titulo": "Arquitecto de Datos",
+            "particular_context": "Tu objetivo es dise\u00f1ar o modificar el esquema SQL. Debes asegurar que las relaciones sean \u00edntegras y eficientes.",
+            "archivos_impactados": [
+                "database.py"
+            ]
+        }
+    ],
+    "qa_protocol": {
+        "requires_user_approval": true,
+        "verification_steps": [
+            "Verificar que los nuevos cambios no rompan las rutas existentes.",
+            "Validar que la base de datos se migre correctamente si hay cambios.",
+            "Comprobar la responsividad de la UI."
+        ]
+    }
+}

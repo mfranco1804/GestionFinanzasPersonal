@@ -1,0 +1,314 @@
+{
+    "timestamp": "2026-09-22T10:15:31.513354",
+    "mision": "Integracion del modulo de Cuadre de Caja, Ventas semanales USDT/BS/USD, Gastos, Ahorro y Compras vinculadas a Recepciones",
+    "global_context": {
+        "stack_tecnologico": [
+            "Python (requirements.txt)",
+            "Flask/Python Web App"
+        ],
+        "esquema_db_actual": {
+            "usuarios": [
+                "id",
+                "username",
+                "password_hash",
+                "role"
+            ],
+            "inventario": [
+                "id",
+                "categoria",
+                "subcategoria",
+                "aplicacion",
+                "descripcion",
+                "marca",
+                "medida_variante",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "existencia",
+                "proveedor",
+                "codigo_principal",
+                "codigos_alternativos"
+            ],
+            "repuestos": [
+                "id",
+                "codigo_principal",
+                "codigos_alternativos",
+                "categoria",
+                "subcategoria",
+                "descripcion",
+                "aplicacion",
+                "medida_variante",
+                "unidad_empaque"
+            ],
+            "repuesto_variantes": [
+                "id",
+                "id_repuesto",
+                "marca",
+                "proveedor",
+                "precio_base_usd",
+                "precio_venta_usd",
+                "costo_usd",
+                "existencia",
+                "FOREIGN"
+            ],
+            "configuracion": [
+                "id"
+            ],
+            "aplicaciones": [
+                "id",
+                "nombre"
+            ],
+            "unidades_empaque": [
+                "id",
+                "nombre"
+            ],
+            "historial_tasas": [
+                "id",
+                "fecha",
+                "tasa_bcv",
+                "tasa_bcv_euro",
+                "tasa_usdt"
+            ],
+            "historial_usdt_real": [
+                "id",
+                "fecha",
+                "tasa",
+                "tasa_compra"
+            ],
+            "ventas": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "tasa_bcv",
+                "tasa_usdt",
+                "delivery_usd",
+                "delivery_bs",
+                "tipo_delivery",
+                "usuario",
+                "ip",
+                "id_cliente",
+                "monto_pagado_usd",
+                "monto_pagado_bs",
+                "FOREIGN"
+            ],
+            "venta_detalles": [
+                "id",
+                "id_venta",
+                "id_producto",
+                "descripcion",
+                "cantidad",
+                "precio_unitario_usd",
+                "subtotal_usd",
+                "FOREIGN"
+            ],
+            "presupuestos": [
+                "id",
+                "fecha",
+                "total_usd",
+                "total_bs",
+                "items_json",
+                "origen",
+                "tasa_bcv",
+                "tasa_usdt"
+            ],
+            "kits": [
+                "id",
+                "nombre",
+                "descripcion"
+            ],
+            "kit_items": [
+                "id",
+                "id_kit",
+                "id_repuesto",
+                "cantidad",
+                "FOREIGN"
+            ],
+            "proveedores": [
+                "id",
+                "nombre",
+                "rif",
+                "telefono",
+                "ubicacion",
+                "email"
+            ],
+            "devoluciones": [
+                "id",
+                "fecha",
+                "id_producto",
+                "producto_nombre",
+                "proveedor",
+                "cantidad",
+                "motivo",
+                "estado",
+                "nota",
+                "origen",
+                "--",
+                "--",
+                "--",
+                "'Descuento'",
+                "'Reingreso'"
+            ],
+            "historial_recepciones": [
+                "id",
+                "fecha",
+                "proveedor",
+                "numero_orden",
+                "total_items",
+                "UNIQUE(proveedor",
+                "numero_orden"
+            ],
+            "opciones_delivery": [
+                "id",
+                "nombre",
+                "precio_usd",
+                "geojson",
+                "color"
+            ],
+            "pagos_motorizado": [
+                "id",
+                "id_venta",
+                "monto_usd",
+                "monto_bs",
+                "metodo_pago",
+                "fecha",
+                "FOREIGN"
+            ],
+            "clientes": [
+                "id",
+                "cedula",
+                "nombre",
+                "apellido",
+                "telefono",
+                "telefono2",
+                "email",
+                "direccion",
+                "tipo_cliente",
+                "notas",
+                "raw_phone",
+                "company",
+                "status",
+                "tags",
+                "notes_summary",
+                "last_contacted_at",
+                "updated_at",
+                "fecha_registro"
+            ],
+            "cliente_interacciones": [
+                "id",
+                "contact_id",
+                "channel",
+                "message_content",
+                "created_at",
+                "FOREIGN"
+            ],
+            "cliente_notas": [
+                "id",
+                "contact_id",
+                "content",
+                "created_at",
+                "FOREIGN"
+            ],
+            "cliente_plantillas": [
+                "id",
+                "title",
+                "content",
+                "created_at"
+            ],
+            "fallas_manuales": [
+                "id",
+                "fecha",
+                "descripcion",
+                "aplicacion",
+                "vendedor",
+                "estado"
+            ],
+            "envios": [
+                "id",
+                "fecha",
+                "nombre",
+                "cedula",
+                "correo",
+                "telefono",
+                "oficina_destino",
+                "empresa_encomienda",
+                "numero_guia",
+                "estado",
+                "items_json",
+                "monto_total_usd",
+                "monto_total_bs",
+                "notas",
+                "usuario",
+                "fecha_despacho",
+                "id_venta",
+                "id_cliente",
+                "FOREIGN"
+            ],
+            "comandas_pickup": [
+                "id",
+                "fecha",
+                "codigo_comanda",
+                "id_venta",
+                "id_presupuesto",
+                "id_cliente",
+                "cliente_nombre",
+                "cliente_cedula",
+                "cliente_telefono",
+                "items_json",
+                "monto_total_usd",
+                "monto_total_bs",
+                "estado_pago",
+                "metodo_pago",
+                "requiere_delivery",
+                "zona_delivery",
+                "costo_delivery_usd",
+                "estado_despacho",
+                "usuario",
+                "notas",
+                "fecha_despacho",
+                "FOREIGN"
+            ],
+            "notificaciones_agotados": [
+                "id",
+                "fecha",
+                "'localtime'"
+            ],
+            "audit_log": [
+                "id",
+                "fecha",
+                "'localtime'"
+            ],
+            "sesiones_activas": [
+                "id",
+                "user_id",
+                "session_token",
+                "ip",
+                "user_agent",
+                "inicio",
+                "'localtime'"
+            ]
+        },
+        "reglas_generales": [
+            "Mantener el c\u00f3digo limpio y documentado.",
+            "No borrar comentarios existentes.",
+            "Asegurar compatibilidad con el servidor Windows actual."
+        ]
+    },
+    "specialists": [
+        {
+            "titulo": "Ingeniero Fullstack",
+            "particular_context": "Encargado de la l\u00f3gica end-to-end.",
+            "archivos_impactados": [
+                "app.py",
+                "database.py"
+            ]
+        }
+    ],
+    "qa_protocol": {
+        "requires_user_approval": true,
+        "verification_steps": [
+            "Verificar que los nuevos cambios no rompan las rutas existentes.",
+            "Validar que la base de datos se migre correctamente si hay cambios.",
+            "Comprobar la responsividad de la UI."
+        ]
+    }
+}

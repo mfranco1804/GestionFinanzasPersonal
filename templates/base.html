@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>{{ config.nombre_app }} — {{ config.usuario_nombre }}</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CDN & Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM: Vanguard UI Architecture (Fintech Agency Tier)
+       Calibrated Slate/Obsidian Canvas with Double-Bezel Precision
+       ========================================================================== */
+    :root {
+      /* Typography */
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* Spatial Canvas & Surfaces */
+      --bg-canvas: #f6f8fc;
+      --bg-mesh-1: rgba(16, 185, 129, 0.04);
+      --bg-mesh-2: rgba(14, 165, 233, 0.04);
+      
+      --surface-card: #ffffff;
+      --surface-card-subtle: #f8fafc;
+      --surface-shell: #edf2f7;
+      --surface-overlay: rgba(255, 255, 255, 0.92);
+      
+      /* Borders & Hairlines */
+      --border-subtle: rgba(15, 23, 42, 0.06);
+      --border-strong: rgba(15, 23, 42, 0.12);
+      --border-focus: rgba(37, 99, 235, 0.35);
+      
+      /* Typography Colors */
+      --text-main: #090d16;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      
+      /* Curated Potes Palette */
+      --pote-efectivo: #059669;
+      --pote-efectivo-bg: #ecfdf5;
+      --pote-efectivo-border: rgba(16, 185, 129, 0.25);
+      
+      --pote-binance: #d97706;
+      --pote-binance-bg: #fffbeb;
+      --pote-binance-border: rgba(245, 158, 11, 0.25);
+      
+      --pote-bs: #0284c7;
+      --pote-bs-bg: #f0f9ff;
+      --pote-bs-border: rgba(14, 165, 233, 0.25);
+      
+      --pote-danger: #e11d48;
+      --pote-danger-bg: #fff1f2;
+      --pote-danger-border: rgba(225, 29, 72, 0.25);
+
+      --brand-navy: #0f172a;
+      --brand-accent: #2563eb;
+      
+      /* Shadows & Haptic Depth */
+      --shadow-ambient: 0 1px 2px rgba(15, 23, 42, 0.03), 0 4px 12px rgba(15, 23, 42, 0.03);
+      --shadow-elevated: 0 2px 4px rgba(15, 23, 42, 0.02), 0 12px 28px -4px rgba(15, 23, 42, 0.06);
+      --shadow-floating: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
+      --shadow-modal: 0 24px 60px -12px rgba(15, 23, 42, 0.22);
+      --shadow-inner-glow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      
+      /* Physics & Motion */
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-base: all 0.25s var(--ease-spring);
+      --transition-fast: all 0.15s var(--ease-spring);
+    }
+
+    /* Core Resets & Viewport Stability */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-canvas);
+      background-image: 
+        radial-gradient(at 0% 0%, var(--bg-mesh-1) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, var(--bg-mesh-2) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* Tabular Numeric Precision */
+    .font-numeric {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.025em;
+    }
+
+    /* Double-Bezel Card Architecture (Doppelrand) */
+    .bezel-card-shell {
+      background: var(--surface-shell);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 4px;
+      transition: var(--transition-base);
+    }
+
+    .bezel-card-inner {
+      background: var(--surface-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow-inner-glow), var(--shadow-ambient);
+      transition: var(--transition-base);
+    }
+
+    .bezel-card-shell:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-elevated);
+    }
+
+    /* Micro-Eyebrow Pill Badges */
+    .micro-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      line-height: 1.2;
+    }
+
+    /* Floating Island Navbar */
+    .floating-island-nav {
+      position: sticky;
+      top: 14px;
+      z-index: 1040;
+      margin: 12px auto 20px auto;
+      max-width: 1420px;
+      width: calc(100% - 32px);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 22px;
+      padding: 10px 20px;
+      box-shadow: var(--shadow-floating);
+      transition: var(--transition-base);
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+      transition: var(--transition-base);
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.08rem;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: -0.01em;
+    }
+
+    /* Central Navigation Segmented Control */
+    .nav-central-capsule {
+      background: #f1f5f9;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 9999px;
+      padding: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-central-item {
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .nav-central-item:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .nav-central-item.active {
+      background: #ffffff;
+      color: #0f172a;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+      font-weight: 700;
+    }
+
+    .nav-central-item.active i {
+      color: #2563eb !important;
+    }
+
+    /* Rates Widget Pill */
+    .rates-widget-pill {
+      background: #f8fafc;
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 9999px;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .rates-widget-pill:hover {
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+      border-color: rgba(203, 213, 225, 1);
+    }
+
+    /* Status Indicator Dot with Pulse */
+    .status-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--pote-efectivo);
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+      animation: pulse-ring 2.2s infinite;
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+      70% { box-shadow: 0 0 0 7px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    /* Kinetic Buttons with Spring Physics */
+    .btn-island-primary {
+      background: #0f172a;
+      color: #ffffff;
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      border-radius: 9999px;
+      padding: 8px 18px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+      transition: var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .btn-island-primary:hover {
+      background: #1e293b;
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+    }
+
+    .btn-island-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-icon-bubble {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      transition: var(--transition-fast);
+    }
+
+    .btn-island-primary:hover .btn-icon-bubble {
+      transform: scale(1.08) rotate(4deg);
+    }
+
+    /* Modern Toast Notification Container */
+    .toast-container {
+      z-index: 1099;
+    }
+
+    .toast-vanguard {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: #ffffff;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Form Controls & Inputs Polish */
+    .form-control, .form-select {
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 9px 13px;
+      font-size: 0.88rem;
+      background-color: #ffffff;
+      color: var(--text-main);
+      transition: var(--transition-fast);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #3b82f6;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* Modal Backdrop Precision */
+    .modal-backdrop.show {
+      opacity: 0.45;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <!-- Floating Island Header -->
+  <header class="floating-island-nav">
+    <div class="d-flex align-items-center justify-content-between gap-3">
+      
+      <!-- Brand & User Profile -->
+      <a class="text-decoration-none d-flex align-items-center gap-2.5" href="{{ url_for('views.cuadre') }}">
+        <div class="brand-mark">
+          <i class="bi bi-wallet2"></i>
+        </div>
+        <div>
+          <div class="brand-title">{{ config.nombre_app }}</div>
+          <div class="brand-subtitle d-flex align-items-center gap-1.5">
+            <span class="status-pulse-dot"></span>
+            <span>{{ config.usuario_nombre }}</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Central Navigation Segmented Control -->
+      <nav class="nav-central-capsule shadow-2xs d-none d-md-inline-flex" aria-label="Navegación Principal">
+        <a href="{{ url_for('views.cuadre') }}" 
+           class="nav-central-item {% if request.path == '/' or request.path.startswith('/cuadre') %}active{% endif %}"
+           title="Cuadre Transaccional Mensual">
+          <i class="bi bi-wallet2 text-success"></i>
+          <span>Cuadre Mensual</span>
+        </a>
+
+        <a href="{{ url_for('views.proyeccion') }}" 
+           class="nav-central-item {% if request.path.startswith('/proyeccion') %}active{% endif %}"
+           title="Proyección de Gastos Fijos vs Entradas Fijas">
+          <i class="bi bi-graph-up-arrow text-primary"></i>
+          <span>Proyección Fija</span>
+        </a>
+      </nav>
+
+      <!-- Quick Control Badges & Live Rates Widget -->
+      <div class="d-flex align-items-center gap-2">
+        
+        <!-- Interactive Live Rates Chip -->
+        <div class="rates-widget-pill d-none d-sm-inline-flex" onclick="if(window.abrirModalGestionTasas) window.abrirModalGestionTasas();" title="Click para ver o modificar tasas de cambio">
+          <span class="badge rounded-pill bg-white text-secondary border font-numeric px-2 py-0.5" style="font-size: 0.72rem;">
+            <i class="bi bi-bank text-primary me-1"></i>BCV: <strong class="text-dark" id="navTasaBCV">...</strong>
+          </span>
+          <span class="badge rounded-pill bg-white text-secondary border font-numeric px-2 py-0.5" style="font-size: 0.72rem;">
+            <i class="bi bi-currency-bitcoin text-warning me-1"></i>USDT: <strong class="text-dark" id="navTasaUSDT">...</strong>
+          </span>
+          <span class="badge rounded-pill bg-white text-secondary border font-numeric px-2 py-0.5 d-none d-xl-inline-block" style="font-size: 0.72rem;">
+            <i class="bi bi-currency-euro text-info me-1"></i>Euro: <strong class="text-dark" id="navTasaEuro">...</strong>
+          </span>
+          <i class="bi bi-sliders text-muted small ms-0.5"></i>
+        </div>
+
+        <button type="button" class="btn btn-sm btn-light border rounded-pill px-3 py-1.5 fw-semibold d-inline-flex align-items-center gap-1.5 text-secondary shadow-sm" id="btnNavSincronizar" onclick="if(window.sincronizarTodoElSistema){ window.sincronizarTodoElSistema(); } else if(window.cargarTodoElMes){ window.cargarTodoElMes(); }" title="Sincronizar tasas en vivo y datos del mes">
+          <i class="bi bi-arrow-clockwise" id="iconNavSincronizar"></i>
+          <span class="d-none d-md-inline">Sincronizar</span>
+        </button>
+
+        <!-- Botón de Versión y Actualizaciones -->
+        <button type="button" class="btn btn-sm btn-light border rounded-pill px-2.5 py-1.5 fw-semibold d-inline-flex align-items-center gap-1.5 text-secondary shadow-sm position-relative" id="btnNavUpdate" onclick="window.comprobarActualizacionesApp(true)" title="Buscar actualizaciones de la aplicación">
+          <i class="bi bi-cloud-arrow-down text-primary" id="iconNavUpdate"></i>
+          <span id="lblNavAppVersion" class="d-none d-lg-inline small font-monospace">v1.0.0</span>
+          <span id="dotNavUpdate" class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle d-none">
+            <span class="visually-hidden">Nueva versión</span>
+          </span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Responsive Sub-navigation for Mobile / Small Screens -->
+    <div class="d-md-none mt-2 pt-2 border-top d-flex justify-content-center">
+      <nav class="nav-central-capsule w-100 justify-content-around">
+        <a href="{{ url_for('views.cuadre') }}" class="nav-central-item flex-grow-1 text-center justify-content-center {% if request.path == '/' or request.path.startswith('/cuadre') %}active{% endif %}">
+          <i class="bi bi-wallet2 text-success"></i>
+          <span>Cuadre</span>
+        </a>
+        <a href="{{ url_for('views.proyeccion') }}" class="nav-central-item flex-grow-1 text-center justify-content-center {% if request.path.startswith('/proyeccion') %}active{% endif %}">
+          <i class="bi bi-graph-up-arrow text-primary"></i>
+          <span>Proyección</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="pb-5">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Modal de Actualización del Sistema -->
+  <div class="modal fade" id="modalActualizacionApp" tabindex="-1" aria-labelledby="modalActualizacionAppLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+        <div class="modal-header text-white" style="background: linear-gradient(135deg, #064e3b 0%, #059669 100%);">
+          <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="modalActualizacionAppLabel">
+            <i class="bi bi-arrow-repeat"></i> Actualización del Sistema
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4" style="background-color: #f8fafc;">
+          <div class="text-center mb-3">
+            <div class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fs-6 fw-bold mb-2">
+              <span id="txtUpdateVersiones">v1.0.0 → v1.0.1</span>
+            </div>
+            <p class="text-muted small mb-0">Una nueva versión está lista para instalarse en este equipo.</p>
+          </div>
+
+          <div class="card border-0 shadow-xs mb-3 bg-white" style="border-radius: 14px;">
+            <div class="card-body p-3">
+              <div class="fw-bold small text-dark mb-1"><i class="bi bi-journal-text text-primary me-1"></i> Novedades de la versión:</div>
+              <div id="txtUpdateNotas" class="small text-muted font-monospace p-2 rounded bg-light" style="max-height: 140px; overflow-y: auto; white-space: pre-wrap;">Sin notas.</div>
+            </div>
+          </div>
+
+          <div class="alert alert-info d-flex align-items-center gap-2 py-2 px-3 small border-0 mb-0" style="border-radius: 12px; background-color: #ecfdf5; color: #065f46;">
+            <i class="bi bi-shield-check fs-5 text-success"></i>
+            <div>
+              <strong>Seguridad garantizada:</strong> Tus datos y balances en <code>finanzas_personales.db</code> están 100% protegidos y nunca se borrarán.
+            </div>
+          </div>
+
+          <!-- Spinner durante descarga -->
+          <div id="boxProgresoActualizacion" class="text-center mt-3 pt-2 d-none">
+            <div class="spinner-border text-success spinner-border-sm me-2" role="status"></div>
+            <span class="small fw-semibold text-dark">Descargando actualización e iniciando reinicio...</span>
+          </div>
+        </div>
+        <div class="modal-footer bg-white border-top-0 px-4 pb-4 pt-0">
+          <button type="button" class="btn btn-light rounded-pill px-3 py-2 fw-semibold text-secondary" data-bs-dismiss="modal" id="btnUpdateLater">Más tarde</button>
+          <button type="button" class="btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm" id="btnUpdateNow" onclick="window.aplicarActualizacionApp()">
+            <i class="bi bi-download me-1"></i> Actualizar Ahora
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vanguard Floating Toast -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast toast-vanguard align-items-center border-0 p-1" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex align-items-center justify-content-between p-2">
+        <div class="d-flex align-items-center gap-2.5" id="toastMessage">
+          <i class="bi bi-check-circle-fill text-success fs-5"></i>
+          <span class="fw-medium small">Operación realizada con éxito</span>
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-3 me-1" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    function showToast(message, type = 'success') {
+      const toastEl = document.getElementById('liveToast');
+      const toastBody = document.getElementById('toastMessage');
+      
+      let icon = 'bi-check-circle-fill text-success';
+      
+      if (type === 'danger' || type === 'error') {
+        icon = 'bi-exclamation-triangle-fill text-danger';
+      } else if (type === 'warning') {
+        icon = 'bi-exclamation-circle-fill text-warning';
+      } else if (type === 'info') {
+        icon = 'bi-info-circle-fill text-info';
+      }
+
+      toastBody.innerHTML = `<i class="bi ${icon} fs-5"></i> <span class="fw-medium small">${message}</span>`;
+      
+      const toast = new bootstrap.Toast(toastEl, { delay: 3500 });
+      toast.show();
+    }
+
+    // Funciones del Auto-Actualizador
+    let infoActualizacionPendiente = null;
+
+    async function cargarVersionActual() {
+      try {
+        const res = await fetch('/api/version');
+        const data = await res.json();
+        if (data.version) {
+          const lbl = document.getElementById('lblNavAppVersion');
+          if (lbl) lbl.textContent = 'v' + data.version;
+        }
+      } catch (e) {
+        console.warn('No se pudo cargar versión:', e);
+      }
+    }
+
+    async function comprobarActualizacionesApp(manual = false) {
+      const icon = document.getElementById('iconNavUpdate');
+      if (manual && icon) icon.classList.add('spinner-border', 'spinner-border-sm');
+
+      try {
+        const res = await fetch('/api/check-update');
+        const data = await res.json();
+        if (manual && icon) icon.classList.remove('spinner-border', 'spinner-border-sm');
+
+        if (data.available) {
+          infoActualizacionPendiente = data;
+          const dot = document.getElementById('dotNavUpdate');
+          if (dot) dot.classList.remove('d-none');
+
+          document.getElementById('txtUpdateVersiones').textContent = `v${data.current_version}  →  v${data.new_version}`;
+          document.getElementById('txtUpdateNotas').textContent = data.release_notes || 'Mejoras de rendimiento y estabilidad.';
+          
+          const modal = new bootstrap.Modal(document.getElementById('modalActualizacionApp'));
+          modal.show();
+        } else {
+          if (manual) {
+            showToast(`El sistema está en su versión más reciente (v${data.current_version || '1.0.0'}).`, 'success');
+          }
+        }
+      } catch (err) {
+        if (manual && icon) icon.classList.remove('spinner-border', 'spinner-border-sm');
+        if (manual) showToast('No se pudo consultar el servidor de actualizaciones en este momento.', 'warning');
+      }
+    }
+
+    async function aplicarActualizacionApp() {
+      const btnNow = document.getElementById('btnUpdateNow');
+      const btnLater = document.getElementById('btnUpdateLater');
+      const boxProg = document.getElementById('boxProgresoActualizacion');
+
+      btnNow.disabled = true;
+      btnLater.disabled = true;
+      boxProg.classList.remove('d-none');
+
+      try {
+        const res = await fetch('/api/apply-update', { method: 'POST' });
+        const data = await res.json();
+
+        if (data.success) {
+          showToast(data.message, 'success');
+          setTimeout(() => {
+            document.body.innerHTML = `
+              <div style="height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#0f172a; color:#fff; font-family:sans-serif;">
+                <div class="spinner-border text-success mb-3" style="width:3rem; height:3rem;"></div>
+                <h3 style="font-weight:700;">Actualizando sistema...</h3>
+                <p style="color:#94a3b8;">La aplicación se reiniciará automáticamente en unos segundos.</p>
+              </div>
+            `;
+          }, 1500);
+        } else {
+          showToast(data.error || 'Error al aplicar actualización.', 'danger');
+          btnNow.disabled = false;
+          btnLater.disabled = false;
+          boxProg.classList.add('d-none');
+        }
+      } catch (err) {
+        showToast('Error de conexión al aplicar la actualización.', 'danger');
+        btnNow.disabled = false;
+        btnLater.disabled = false;
+        boxProg.classList.add('d-none');
+      }
+    }
+
+    // Inicialización al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarVersionActual();
+      // Chequeo silencioso en segundo plano tras 3 segundos
+      setTimeout(() => {
+        comprobarActualizacionesApp(false);
+      }, 3000);
+    });
+  </script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>
