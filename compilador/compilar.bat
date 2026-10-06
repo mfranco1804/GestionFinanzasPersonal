@@ -6,6 +6,6 @@ echo       COMPILADOR BINARIO - APP GESTION PERSONAL
 echo ========================================================
 echo.
 cd /d "%~dp0"
-python compilar.py %1
+python compilar.py %*
 echo.
 pause

@@ -12,7 +12,23 @@ import urllib.request
 import urllib.parse
 
 REPO = "mfranco1804/GestionFinanzasPersonal"
-VERSION = "v1.0.0"
+
+def obtener_version_actual():
+    """Lee la versión desde argumentos de línea de comandos o desde updater.py."""
+    if len(sys.argv) > 1 and sys.argv[1].strip():
+        v = sys.argv[1].strip()
+        return v if v.startswith("v") else f"v{v}"
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    updater_file = os.path.join(root_dir, "updater.py")
+    if os.path.exists(updater_file):
+        with open(updater_file, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.strip().startswith("APP_VERSION"):
+                    v = line.split("=", 1)[1].strip().strip('"').strip("'")
+                    return v if v.startswith("v") else f"v{v}"
+    return "v1.0.0"
+
+VERSION = obtener_version_actual()
 
 def obtener_token():
     # 1. Variables de entorno

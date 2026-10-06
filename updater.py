@@ -32,7 +32,7 @@ def _get_ssl_context():
 # ═══════════════════════════════════════════════════════════════
 
 # Versión actual del programa (fuente de verdad).
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 
 # Repositorio público de GitHub donde se publican los Releases.
 GITHUB_OWNER = "mfranco1804"

@@ -291,7 +291,73 @@ def publicar_en_github(output_dir, version):
 #  FLUJO PRINCIPAL DE COMPILACIÓN
 # ═══════════════════════════════════════════════════════════════
 
-def main():
+def gestionar_version_interactiva():
+    """
+    Pregunta al usuario qué versión desea compilar, ofreciendo:
+    1. Próximo parche semántico (ej: 1.0.0 -> 1.0.1) - Recomendado para actualizaciones.
+    2. Próxima versión menor (ej: 1.0.0 -> 1.1.0) - Para nuevas características.
+    3. Escribir versión personalizada manual.
+    4. Mantener versión actual sin cambios.
+    """
+    version_actual = leer_version()
+    
+    # Si se pasó explícitamente por línea de comandos (ej: python compilar.py 1.0.1)
+    if len(sys.argv) > 1:
+        arg_v = sys.argv[1].strip().lstrip("vV")
+        if arg_v:
+            actualizar_version(arg_v)
+            print(f"[INFO] Versión configurada desde argumentos de consola: v{arg_v}")
+            return arg_v
+
+    # Calcular versiones semánticas recomendadas
+    partes = version_actual.split(".")
+    try:
+        mayor = int(partes[0])
+        menor = int(partes[1]) if len(partes) > 1 else 0
+        parche = int(partes[2]) if len(partes) > 2 else 0
+        v_patch = f"{mayor}.{menor}.{parche + 1}"
+        v_minor = f"{mayor}.{menor + 1}.0"
+    except Exception:
+        v_patch = "1.0.1"
+        v_minor = "1.1.0"
+
+    print("=" * 60)
+    print(f"  VERSIÓN ACTUAL DEL SISTEMA: v{version_actual}")
+    print("=" * 60)
+    print("  Para que las otras computadoras detecten una ACTUALIZACIÓN automática,")
+    print("  la versión debe ser numéricamente superior a la que tienen instalada (ej: 1.0.1 > 1.0.0).\n")
+    print(f"  [1] v{v_patch} (Recomendado - Nueva actualización/parche)")
+    print(f"  [2] v{v_minor} (Mejoras y nuevas funciones)")
+    print(f"  [3] Mantener versión actual (v{version_actual})")
+    print(f"  [4] Ingresar versión personalizada manualmente")
+    print("=" * 60)
+
+    version_elegida = v_patch
+    try:
+        eleccion = input(f"\nSelecciona una opción [Presiona ENTER para v{v_patch}]: ").strip()
+        if eleccion == "" or eleccion == "1":
+            version_elegida = v_patch
+        elif eleccion == "2":
+            version_elegida = v_minor
+        elif eleccion == "3":
+            version_elegida = version_actual
+        elif eleccion == "4":
+            custom = input("Escribe la versión deseada (ej: 1.0.2): ").strip().lstrip("vV")
+            version_elegida = custom if custom else v_patch
+        else:
+            if "." in eleccion:
+                version_elegida = eleccion.lstrip("vV")
+            else:
+                version_elegida = v_patch
+    except (KeyboardInterrupt, EOFError):
+        print("\n[INFO] Usando versión por defecto:", v_patch)
+        version_elegida = v_patch
+
+    actualizar_version(version_elegida)
+    print(f"\n>> Versión establecida para esta compilación: v{version_elegida} <<\n")
+    return version_elegida
+
+def main(version=None):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     root_dir = os.path.dirname(script_dir)
     output_dir = os.path.join(root_dir, "compilado")
@@ -299,8 +365,9 @@ def main():
     dist_dir = os.path.join(script_dir, "dist")
     spec_file = os.path.join(script_dir, f"{PROGRAM_NAME}.spec")
 
-    version = leer_version()
-    print(f"Versión de compilación: v{version}")
+    if not version:
+        version = leer_version()
+    print(f"Versión de compilación activa: v{version}")
 
     # 1. Limpieza
     print("\n[1/6] Limpiando carpetas de compilación anteriores...")
@@ -419,12 +486,27 @@ def main():
         except OSError:
             pass
 
-    # 6. Publicación
+    # 5.5 Compilar instalador autónomo sincronizado
+    print("\n[5.5] Compilando instalador autónomo sincronizado (Instalar_AppGestionPersonal.exe)...")
+    compilar_inst_py = os.path.join(root_dir, "instalador", "compilar_instalador.py")
+    if os.path.exists(compilar_inst_py):
+        try:
+            subprocess.run([sys.executable, compilar_inst_py], check=True)
+            # Actualizar checksums con el nuevo instalador
+            inst_path = os.path.join(output_dir, f"Instalar_{PROGRAM_NAME}.exe")
+            if os.path.exists(inst_path):
+                inst_hash = calcular_sha256(inst_path)
+                with open(checksums_path, "a", encoding="utf-8") as f:
+                    f.write(f"{inst_hash}  Instalar_{PROGRAM_NAME}.exe\n")
+        except Exception as e_inst:
+            print(f"  [AVISO] No se pudo compilar el instalador automáticamente: {e_inst}")
+
+    # 6. Publicación en GitHub Releases
     publicar_en_github(output_dir, version)
 
     print("\n" + "="*60)
-    print("¡COMPILACIÓN COMPLETADA EXITOSAMENTE!")
-    print(f"Versión: v{version}")
+    print("¡COMPILACIÓN Y ACTUALIZACIÓN COMPLETADAS!")
+    print(f"Versión publicada: v{version}")
     print(f"Carpeta lista para exportar a otros equipos:")
     print(f"  -> {output_dir}")
     print("="*60)
@@ -434,12 +516,5 @@ if __name__ == "__main__":
     print("   COMPILADOR OFICIAL — APP GESTIÓN PERSONAL")
     print("="*60 + "\n")
 
-    version_actual = leer_version()
-    print(f"Versión actual: {version_actual}")
-    
-    # Si se ejecuta sin interacción (por batch o automatización)
-    if len(sys.argv) > 1:
-        nueva = sys.argv[1].strip()
-        if nueva:
-            actualizar_version(nueva)
-    main()
+    version_seleccionada = gestionar_version_interactiva()
+    main(version_seleccionada)

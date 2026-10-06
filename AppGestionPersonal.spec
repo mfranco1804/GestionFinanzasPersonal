@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\app.py'],
+    ['c:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\app.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\templates', 'templates'), ('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\routes', 'routes'), ('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\services', 'services'), ('C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\utils', 'utils')],
+    datas=[('c:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\templates', 'templates'), ('c:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\routes', 'routes'), ('c:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\services', 'services'), ('c:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\utils', 'utils')],
     hiddenimports=['waitress', 'sqlite3', 'certifi', 'updater', 'bs4', 'dotenv'],
     hookspath=[],
     hooksconfig={},
@@ -36,5 +36,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     uac_admin=True,
-    icon=['C:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\icono.ico'],
+    icon=['c:\\Users\\Miguel F\\.gemini\\antigravity\\scratch\\App Gestion Personal\\icono.ico'],
 )
