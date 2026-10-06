@@ -6,43 +6,223 @@
      VANGUARD UI STYLES: Cuadre Financiero Personal
      ========================================================================== */
   
-  /* Navigation Tabs Capsule */
-  .nav-tabs-vanguard {
-    background: #edf2f7;
-    padding: 6px;
-    border-radius: 18px;
-    display: inline-flex;
-    border: 1px solid var(--border-subtle);
-    gap: 4px;
-    width: 100%;
-    overflow-x: auto;
-    scrollbar-width: none;
+  /* ==========================================================================
+     STICKY COMMAND DOCK & SEGMENTED CONTROLLER (Vanguard Agency Architecture)
+     ========================================================================== */
+  .sticky-command-dock-wrapper {
+    position: sticky;
+    top: 78px;
+    z-index: 1025;
+    margin-bottom: 24px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .nav-tabs-vanguard::-webkit-scrollbar {
-    display: none;
+  @media (max-width: 991.98px) {
+    .sticky-command-dock-wrapper {
+      top: 68px;
+    }
   }
-  .nav-tabs-vanguard .nav-link {
-    border: none;
-    border-radius: 13px;
-    color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.86rem;
-    padding: 9px 18px;
-    transition: var(--transition-fast);
+
+  .command-dock-shell {
+    background: rgba(237, 242, 247, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(203, 213, 225, 0.85);
+    border-radius: 20px;
+    padding: 4px;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.03);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sticky-command-dock-wrapper.is-stuck .command-dock-shell {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: rgba(148, 163, 184, 0.45);
+    box-shadow: 0 16px 36px -6px rgba(15, 23, 42, 0.14), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+  }
+
+  .command-dock-inner {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 16px;
+    padding: 6px 12px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  .nav-tabs-vanguard-deck {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    white-space: nowrap;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 2px;
+  }
+  .nav-tabs-vanguard-deck::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Segmented Deck Button */
+  .deck-tab-btn {
+    border: 1px solid transparent;
+    outline: none;
     background: transparent;
+    border-radius: 12px;
+    padding: 7px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    position: relative;
+    user-select: none;
   }
-  .nav-tabs-vanguard .nav-link:hover {
+
+  .deck-tab-btn:hover:not(.active) {
+    background: rgba(241, 245, 249, 0.85);
     color: var(--text-main);
-    background: rgba(255, 255, 255, 0.65);
+    transform: translateY(-1px);
   }
-  .nav-tabs-vanguard .nav-link.active {
+
+  .deck-tab-btn.active {
     background: #ffffff;
     color: var(--text-main);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.07);
+    font-weight: 700;
+    border-color: rgba(226, 232, 240, 0.95);
+    box-shadow: 0 3px 10px -1px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
+
+  /* Active Accent Borders */
+  .deck-tab-btn#tab-ingresos.active {
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+  .deck-tab-btn#tab-gastos.active {
+    border-color: rgba(225, 29, 72, 0.35);
+  }
+  .deck-tab-btn#tab-cambios.active {
+    border-color: rgba(245, 158, 11, 0.35);
+  }
+  .deck-tab-btn#tab-balance.active {
+    border-color: rgba(37, 99, 235, 0.35);
+  }
+
+  /* Icon Bubble Inside Tab */
+  .tab-icon-wrap {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .deck-tab-btn.active .tab-icon-wrap {
+    transform: scale(1.08);
+  }
+
+  /* Metric Chips inside Tabs */
+  .tab-metric-chip {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: -0.025em;
+    transition: all 0.2s ease;
+  }
+  .chip-success {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+  .chip-danger {
+    background: #fff1f2;
+    color: #e11d48;
+    border: 1px solid rgba(225, 29, 72, 0.2);
+  }
+  .chip-warning {
+    background: #fffbeb;
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+  .chip-primary {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+  }
+
+  /* Right Side Action Deck */
+  .deck-actions-hub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .deck-kpi-pill {
+    background: #f8fafc;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 9999px;
+    padding: 5px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+  }
+  .deck-kpi-label {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .pulse-dot-deck {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    animation: pulseDotDeck 2s infinite;
+  }
+  @keyframes pulseDotDeck {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+
+  .btn-deck-action {
+    font-size: 0.82rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    padding: 7px 16px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-deck-action:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
+  }
+  .btn-deck-success {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #ffffff !important;
+  }
+  .btn-deck-danger {
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    color: #ffffff !important;
+  }
+  .btn-deck-warning {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: #ffffff !important;
+  }
+  .btn-deck-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: #ffffff !important;
   }
 
   /* Segmented Pot Filters */
@@ -708,21 +888,73 @@
   </div>
 
   <!-- =========================================================================
-       3. NAVIGATION TABS (Vanguard Capsule)
+       3. NAVIGATION COMMAND DECK (Sticky Floating Control Dock)
        ========================================================================= -->
-  <div class="nav-tabs-vanguard mb-4" id="cuadreTabs" role="tablist">
-    <button class="nav-link active" id="tab-ingresos" data-bs-toggle="tab" data-bs-target="#content-ingresos" type="button" role="tab">
-      <i class="bi bi-wallet2 text-success"></i> Ingresos Personales
-    </button>
-    <button class="nav-link" id="tab-gastos" data-bs-toggle="tab" data-bs-target="#content-gastos" type="button" role="tab">
-      <i class="bi bi-receipt-cutoff text-danger"></i> Gastos Personales
-    </button>
-    <button class="nav-link" id="tab-cambios" data-bs-toggle="tab" data-bs-target="#content-cambios" type="button" role="tab">
-      <i class="bi bi-arrow-left-right text-warning"></i> Cambios entre Potes & Ahorro
-    </button>
-    <button class="nav-link" id="tab-balance" data-bs-toggle="tab" data-bs-target="#content-balance" type="button" role="tab">
-      <i class="bi bi-pie-chart text-primary"></i> Balance Mensual & Arqueo
-    </button>
+  <div class="sticky-command-dock-wrapper" id="commandDockWrapper">
+    <div class="bezel-card-shell command-dock-shell">
+      <div class="bezel-card-inner command-dock-inner d-flex flex-wrap align-items-center justify-content-between gap-2">
+        
+        <!-- Segmented Tab Controller -->
+        <div class="nav-tabs-vanguard-deck" id="cuadreTabs" role="tablist">
+          
+          <!-- Tab 1: Ingresos -->
+          <button class="nav-link deck-tab-btn active" id="tab-ingresos" data-bs-toggle="tab" data-bs-target="#content-ingresos" type="button" role="tab" aria-selected="true">
+            <span class="tab-icon-wrap bg-success-subtle text-success">
+              <i class="bi bi-wallet2"></i>
+            </span>
+            <span class="tab-label">Ingresos</span>
+            <span class="tab-metric-chip chip-success font-numeric" id="tabChipIngresos">$ 0.00</span>
+          </button>
+          
+          <!-- Tab 2: Gastos -->
+          <button class="nav-link deck-tab-btn" id="tab-gastos" data-bs-toggle="tab" data-bs-target="#content-gastos" type="button" role="tab" aria-selected="false">
+            <span class="tab-icon-wrap bg-danger-subtle text-danger">
+              <i class="bi bi-receipt-cutoff"></i>
+            </span>
+            <span class="tab-label">Gastos</span>
+            <span class="tab-metric-chip chip-danger font-numeric" id="tabChipGastos">$ 0.00</span>
+          </button>
+          
+          <!-- Tab 3: Cambios -->
+          <button class="nav-link deck-tab-btn" id="tab-cambios" data-bs-toggle="tab" data-bs-target="#content-cambios" type="button" role="tab" aria-selected="false">
+            <span class="tab-icon-wrap bg-warning-subtle text-warning">
+              <i class="bi bi-arrow-left-right"></i>
+            </span>
+            <span class="tab-label">Cambios & Potes</span>
+            <span class="tab-metric-chip chip-warning font-numeric" id="tabChipCambios">Potes</span>
+          </button>
+          
+          <!-- Tab 4: Balance -->
+          <button class="nav-link deck-tab-btn" id="tab-balance" data-bs-toggle="tab" data-bs-target="#content-balance" type="button" role="tab" aria-selected="false">
+            <span class="tab-icon-wrap bg-primary-subtle text-primary">
+              <i class="bi bi-pie-chart"></i>
+            </span>
+            <span class="tab-label">Balance & Arqueo</span>
+            <span class="tab-metric-chip chip-primary font-numeric" id="tabChipBalance">Resumen</span>
+          </button>
+          
+        </div>
+
+        <!-- Right Side Contextual Action Hub -->
+        <div class="deck-actions-hub d-flex align-items-center gap-2 ms-auto">
+          
+          <!-- Live Superávit Pill (Glanceable when scrolling through tables) -->
+          <div class="deck-kpi-pill d-none d-md-flex align-items-center gap-2" title="Superávit mensual en vivo">
+            <span class="pulse-dot-deck"></span>
+            <span class="deck-kpi-label">Superávit:</span>
+            <span class="font-numeric fw-bold text-primary" id="deckMiniSuperavit">$ 0.00</span>
+          </div>
+
+          <!-- Fast Contextual Action Trigger -->
+          <button type="button" class="btn btn-sm btn-deck-action btn-deck-success rounded-pill px-3 py-1.5 fw-bold d-flex align-items-center gap-1.5 shadow-sm" id="btnDeckContextualAction" onclick="ejecutarAccionContextualDeck()">
+            <i class="bi bi-plus-circle-fill text-white" id="iconDeckAction"></i>
+            <span id="textDeckAction">Nuevo Ingreso</span>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
   </div>
 
   <!-- =========================================================================
@@ -2870,6 +3102,8 @@
       }
       document.getElementById('kpiIngresosTotal').innerText = fmtUSD(totPote.total_usd);
       document.getElementById('kpiTotalIngresos').innerText = fmtUSD(totPote.total_usd);
+      const chipIng = document.getElementById('tabChipIngresos');
+      if (chipIng) chipIng.innerText = fmtUSD(totPote.total_usd);
       document.getElementById('kpiConteoIngresos').innerText = `${totPote.conteo || 0} entradas registradas`;
 
       // Conteos de los botones segmentados
@@ -3106,6 +3340,8 @@
       }
       document.getElementById('kpiGastosTotal').innerText = fmtUSD(totPote.total_usd);
       document.getElementById('kpiTotalGastos').innerText = fmtUSD(totPote.total_usd);
+      const chipGas = document.getElementById('tabChipGastos');
+      if (chipGas) chipGas.innerText = fmtUSD(totPote.total_usd);
       document.getElementById('kpiConteoGastos').innerText = `${totPote.conteo || 0} registros`;
 
       // Conteos de botones segmentados
@@ -3628,10 +3864,14 @@
       // Pilar 3: Rendimiento
       document.getElementById('kpiSuperavitNeto').innerText = fmtUSD(p3.superavit_neto);
       document.getElementById('kpiTasaAhorro').innerText = `Tasa de Ahorro: ${p3.tasa_ahorro_pct}%`;
+      const miniSup = document.getElementById('deckMiniSuperavit');
+      if (miniSup) miniSup.innerText = fmtUSD(p3.superavit_neto);
       if (p3.superavit_neto < 0) {
         document.getElementById('kpiSuperavitNeto').className = 'kpi-value-display text-danger';
+        if (miniSup) miniSup.className = 'font-numeric fw-bold text-danger';
       } else {
         document.getElementById('kpiSuperavitNeto').className = 'kpi-value-display text-primary';
+        if (miniSup) miniSup.className = 'font-numeric fw-bold text-primary';
       }
 
     } catch (e) {
@@ -4749,12 +4989,100 @@
     }
   }
 
+  // =========================================================================
+  // GESTIÓN DEL STICKY COMMAND DOCK (Vanguard Control Deck)
+  // =========================================================================
+  function inicializarCommandDock() {
+    const dockWrapper = document.getElementById('commandDockWrapper');
+    if (dockWrapper) {
+      const checkSticky = () => {
+        const rect = dockWrapper.getBoundingClientRect();
+        const threshold = window.innerWidth < 992 ? 70 : 80;
+        if (rect.top <= threshold) {
+          dockWrapper.classList.add('is-stuck');
+        } else {
+          dockWrapper.classList.remove('is-stuck');
+        }
+      };
+      window.addEventListener('scroll', checkSticky, { passive: true });
+      checkSticky();
+    }
+
+    // Configurar listener para el cambio de tabs en el dock
+    document.querySelectorAll('#cuadreTabs .nav-link').forEach(btn => {
+      btn.addEventListener('shown.bs.tab', (e) => {
+        actualizarBotonContextualDeck();
+        
+        // Auto-scroll ergonómico: si el usuario está muy abajo en una tabla,
+        // al cambiar de tab sube suavemente al inicio del nuevo contenido
+        if (dockWrapper) {
+          const rect = dockWrapper.getBoundingClientRect();
+          const threshold = window.innerWidth < 992 ? 70 : 80;
+          if (rect.top <= threshold + 10) {
+            const yOffset = -(threshold + 8);
+            const y = dockWrapper.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    actualizarBotonContextualDeck();
+  }
+
+  function actualizarBotonContextualDeck() {
+    const activeTab = document.querySelector('#cuadreTabs .nav-link.active');
+    const btn = document.getElementById('btnDeckContextualAction');
+    const icon = document.getElementById('iconDeckAction');
+    const text = document.getElementById('textDeckAction');
+    if (!activeTab || !btn) return;
+
+    const target = activeTab.getAttribute('data-bs-target');
+    if (target === '#content-ingresos') {
+      btn.style.display = 'inline-flex';
+      btn.className = 'btn btn-sm btn-deck-action btn-deck-success rounded-pill px-3 py-1.5 fw-bold d-flex align-items-center gap-1.5 shadow-sm';
+      if (icon) icon.className = 'bi bi-plus-circle-fill text-white';
+      if (text) text.innerText = 'Nuevo Ingreso';
+    } else if (target === '#content-gastos') {
+      btn.style.display = 'inline-flex';
+      btn.className = 'btn btn-sm btn-deck-action btn-deck-danger rounded-pill px-3 py-1.5 fw-bold d-flex align-items-center gap-1.5 shadow-sm';
+      if (icon) icon.className = 'bi bi-plus-circle-fill text-white';
+      if (text) text.innerText = 'Nuevo Gasto';
+    } else if (target === '#content-cambios') {
+      btn.style.display = 'inline-flex';
+      btn.className = 'btn btn-sm btn-deck-action btn-deck-warning rounded-pill px-3 py-1.5 fw-bold d-flex align-items-center gap-1.5 shadow-sm';
+      if (icon) icon.className = 'bi bi-arrow-left-right text-white';
+      if (text) text.innerText = 'Nuevo Cambio';
+    } else if (target === '#content-balance') {
+      btn.style.display = 'inline-flex';
+      btn.className = 'btn btn-sm btn-deck-action btn-deck-primary rounded-pill px-3 py-1.5 fw-bold d-flex align-items-center gap-1.5 shadow-sm';
+      if (icon) icon.className = 'bi bi-arrow-clockwise text-white';
+      if (text) text.innerText = 'Recalcular';
+    }
+  }
+
+  function ejecutarAccionContextualDeck() {
+    const activeTab = document.querySelector('#cuadreTabs .nav-link.active');
+    if (!activeTab) return;
+    const target = activeTab.getAttribute('data-bs-target');
+    if (target === '#content-ingresos') {
+      abrirModalNuevoIngreso();
+    } else if (target === '#content-gastos') {
+      abrirModalNuevoGasto();
+    } else if (target === '#content-cambios') {
+      abrirModalNuevoCambio();
+    } else if (target === '#content-balance') {
+      cargarCuadreCompleto();
+    }
+  }
+
   // Inicialización al cargar la página
   document.addEventListener('DOMContentLoaded', () => {
     cargarTasas();
     cargarTodoElMes();
     cargarEstadoWhatsApp();
     cargarEstadoTelegram();
+    inicializarCommandDock();
   });
 </script>
 {% endblock %}
